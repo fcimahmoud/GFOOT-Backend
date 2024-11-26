@@ -1,0 +1,6 @@
+@GFoot.API_HostAddress = http://localhost:5160
+
+GET {{GFoot.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
