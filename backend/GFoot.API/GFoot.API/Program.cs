@@ -32,6 +32,7 @@ namespace GFoot.API
 
             var app = builder.Build();
 
+            app.UseCustomExceptionMiddleware();
             await app.SeedDbAsync();
 
             if (app.Environment.IsDevelopment())

@@ -1,4 +1,6 @@
 ﻿
+using GFoot.API.Middlewares;
+
 namespace GFoot.API.Extensions
 {
     public static class WebApplicationExtensions
@@ -32,6 +34,11 @@ namespace GFoot.API.Extensions
                 logger.LogError(ex, "An error has been occured during applying the migration");
             }
 
+            return app;
+        }
+        public static WebApplication UseCustomExceptionMiddleware(this WebApplication app)
+        {
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
             return app;
         }
     }
