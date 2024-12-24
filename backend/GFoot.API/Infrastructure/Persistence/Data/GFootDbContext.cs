@@ -1,10 +1,4 @@
 ﻿
-global using Domain.Entities.Factory;
-global using Domain.Entities.Identity;
-global using Domain.Entities.Individual;
-global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-global using Microsoft.EntityFrameworkCore;
-
 namespace Persistence.Data
 {
     public class GFootDbContext

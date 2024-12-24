@@ -1,12 +1,4 @@
 
-global using Microsoft.EntityFrameworkCore;
-global using Persistence.Data;
-global using Domain.Entities.Identity;
-global using Microsoft.AspNetCore.Identity;
-global using Domain.Contracts;
-global using Persistence;
-global using GFoot.API.Extensions;
-
 namespace GFoot.API
 {
     public class Program
@@ -19,6 +11,7 @@ namespace GFoot.API
                 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -41,7 +34,6 @@ namespace GFoot.API
 
             await app.SeedDbAsync();
 
-
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -51,7 +43,6 @@ namespace GFoot.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
