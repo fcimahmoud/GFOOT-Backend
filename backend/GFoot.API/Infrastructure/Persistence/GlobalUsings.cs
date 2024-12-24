@@ -8,3 +8,4 @@ global using Domain.Entities.Factory;
 global using Domain.Entities.Individual;
 global using Microsoft.EntityFrameworkCore;
 global using Domain.Entities.Identity;
+global using Domain.Contracts;

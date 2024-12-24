@@ -3,17 +3,22 @@ global using Microsoft.EntityFrameworkCore;
 global using Persistence.Data;
 global using Domain.Entities.Identity;
 global using Microsoft.AspNetCore.Identity;
+global using Domain.Contracts;
+global using Persistence;
+global using GFoot.API.Extensions;
 
 namespace GFoot.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers()
                 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -33,6 +38,9 @@ namespace GFoot.API
             }).AddEntityFrameworkStores<GFootDbContext>();
 
             var app = builder.Build();
+
+            await app.SeedDbAsync();
+
 
             if (app.Environment.IsDevelopment())
             {
