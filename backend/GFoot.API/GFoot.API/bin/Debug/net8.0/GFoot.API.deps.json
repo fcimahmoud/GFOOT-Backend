@@ -1012,7 +1012,8 @@
       },
       "Presentation/1.0.0": {
         "dependencies": {
-          "Services.Abstractions": "1.0.0"
+          "Services.Abstractions": "1.0.0",
+          "Swashbuckle.AspNetCore": "6.4.0"
         },
         "runtime": {
           "Presentation.dll": {}
