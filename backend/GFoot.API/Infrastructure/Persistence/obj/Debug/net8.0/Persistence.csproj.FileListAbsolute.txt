@@ -20,3 +20,5 @@ D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persiste
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\refint\Persistence.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\ref\Persistence.dll
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.runtimeconfig.json
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.genruntimeconfig.cache

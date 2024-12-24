@@ -1,0 +1,10 @@
+﻿global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.AspNetCore.Identity;
+global using System.Collections.Concurrent;
+global using Domain.Entities;
+global using Persistence.Data;
+global using Domain.Entities.Factory;
+global using Domain.Entities.Individual;
+global using Microsoft.EntityFrameworkCore;
+global using Domain.Entities.Identity;
