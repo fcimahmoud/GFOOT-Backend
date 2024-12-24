@@ -9,7 +9,7 @@ namespace Services
         : IServiceManager
     {
         private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
-            new(() => new AuthenticationService(userManager, options));
+            new(() => new AuthenticationService(userManager, unitOfWork, options));
         public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
     }
 }

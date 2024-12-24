@@ -1,7 +1,4 @@
-﻿global using Domain.Exceptions;
-global using Shared.ErrorModels;
-global using System.Net;
-
+﻿
 namespace GFoot.API.Middlewares
 {
     public class GlobalErrorHandlingMiddleware (

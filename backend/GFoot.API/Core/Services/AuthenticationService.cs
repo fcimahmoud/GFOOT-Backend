@@ -2,7 +2,8 @@
 namespace Services
 {
     internal class AuthenticationService(
-        UserManager<ApplicationUser> userManager, 
+        UserManager<ApplicationUser> userManager,
+        IUnitOfWork _unitOfWork,
         IOptions<JwtOptions> options
         )
         : IAuthenticationService
@@ -42,6 +43,56 @@ namespace Services
                 var errors = result.Errors.Select(error => error.Description).ToList();
                 throw new ValidationException(errors);
             }
+
+            // Assign a role based on UserType
+            var role = registerModel.UserType.ToLower() switch
+            {
+                "individualuser" => "IndividualUserRole",
+                "factoryuser" => "FactoryUserRole",
+                "environmentalagent" => "EnvironmentalAgentRole",
+                "admin" => "AdminRole",
+                _ => throw new ArgumentException("Invalid UserType specified.")
+            };
+
+            // Add the user to the appropriate role
+            var roleAssignmentResult = await userManager.AddToRoleAsync(user, role);
+            if (!roleAssignmentResult.Succeeded)
+            {
+                var errors = roleAssignmentResult.Errors.Select(error => error.Description).ToList();
+                throw new ValidationException(errors);
+            }
+
+            // Create corresponding entity based on UserType
+            switch (registerModel.UserType.ToLower())
+            {
+                case "individualuser":
+                    var individualRepo = _unitOfWork.GetRepository<IndividualUser, string>();
+                    await individualRepo.AddAsync(new IndividualUser { ApplicationUserId = user.Id });
+                    break;
+
+                case "factoryuser":
+                    var factoryRepo = _unitOfWork.GetRepository<FactoryUser, string>();
+                    await factoryRepo.AddAsync(new FactoryUser
+                    {
+                        ApplicationUserId = user.Id,
+                        IndustryType = registerModel.IndustryType
+                    });
+                    break;
+
+                case "environmentalagent":
+                    var agentRepo = _unitOfWork.GetRepository<EnvironmentalAgent, string>();
+                    await agentRepo.AddAsync(new EnvironmentalAgent { ApplicationUserId = user.Id });
+                    break;
+
+                case "admin":
+                    // No additional entity creation is needed for Admin users
+                    break;
+
+                default:
+                    throw new ArgumentException("Invalid UserType specified.");
+            }
+
+            await _unitOfWork.SaveChangesAsynk();
 
             return new UserResultDTO(
              user.DisplayName,

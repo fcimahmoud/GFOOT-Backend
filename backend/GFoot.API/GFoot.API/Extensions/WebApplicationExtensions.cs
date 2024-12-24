@@ -1,6 +1,4 @@
 ﻿
-using GFoot.API.Middlewares;
-
 namespace GFoot.API.Extensions
 {
     public static class WebApplicationExtensions

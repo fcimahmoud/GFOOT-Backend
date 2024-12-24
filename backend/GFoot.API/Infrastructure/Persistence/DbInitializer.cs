@@ -11,7 +11,7 @@ namespace Persistence
         public async Task InitializeIdentityAsync()
         {
             var roles = new[]
-            { "Admin", "IndividualUserRole", "FactoryUserRole", "EnvironmentalAgentRole" };
+            { "AdminRole", "IndividualUserRole", "FactoryUserRole", "EnvironmentalAgentRole" };
 
             // Seed Default Roles
             foreach (var role in roles)
@@ -34,7 +34,7 @@ namespace Persistence
                 };
 
                 await userManager.CreateAsync(admin, "P@ssw0rd");
-                await userManager.AddToRoleAsync(admin, "Admin");
+                await userManager.AddToRoleAsync(admin, "AdminRole");
             }
         }
     }

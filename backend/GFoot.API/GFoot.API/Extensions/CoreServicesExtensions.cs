@@ -1,7 +1,4 @@
-﻿global using Services.Abstractions;
-global using Services;
-global using Shared;
-
+﻿
 namespace GFOOT.API.Extensions
 {
     public static class CoreServicesExtensions

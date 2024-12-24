@@ -9,3 +9,5 @@ global using Microsoft.IdentityModel.Tokens;
 global using System.IdentityModel.Tokens.Jwt;
 global using Services.Abstractions;
 global using Domain.Exceptions;
+global using Domain.Entities.Factory;
+global using Domain.Entities.Individual;

@@ -10,6 +10,8 @@ namespace GFoot.API
             builder.Services.AddControllers()
                 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
+            builder.Services.AddCoreServices(builder.Configuration);
+
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
