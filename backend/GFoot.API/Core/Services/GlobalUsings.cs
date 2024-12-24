@@ -1,0 +1,11 @@
+﻿global using Domain.Contracts;
+global using Domain.Entities.Identity;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.Extensions.Options;
+global using Shared;
+global using System.Security.Claims;
+global using System.Text;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using Services.Abstractions;
+global using Domain.Exceptions;
