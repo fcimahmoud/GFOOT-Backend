@@ -11,3 +11,6 @@ global using Services.Abstractions;
 global using Domain.Exceptions;
 global using Domain.Entities.Factory;
 global using Domain.Entities.Individual;
+global using MailKit.Net.Smtp;
+global using MailKit.Security;
+global using MimeKit;

@@ -30,7 +30,18 @@ namespace GFoot.API
                 options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
-            }).AddEntityFrameworkStores<GFootDbContext>();
+
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultProvider;
+            })
+                .AddEntityFrameworkStores<GFootDbContext>()
+                .AddDefaultTokenProviders();
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2); // Token expires in 2 hours
+            });
+
+
 
             var app = builder.Build();
 

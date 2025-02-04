@@ -4,7 +4,8 @@ namespace Services
     internal class AuthenticationService(
         UserManager<ApplicationUser> userManager,
         IUnitOfWork _unitOfWork,
-        IOptions<JwtOptions> options
+        IOptions<JwtOptions> options,
+        IEmailService emailService
         )
         : IAuthenticationService
     {
@@ -132,5 +133,36 @@ namespace Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequestDto dto)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            if (user == null) return false;  // Email doesn't exist
+
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var resetUrl = $"https://localhost:5001/api/Authentication/Reset-Password?email={dto.Email}&token={token}";
+            // var resetUrl = $"{_config["AppSettings:FrontendUrl"]}/Reset-Password?email={email}&token={token}";
+
+
+            var emailBody = $@"
+            <h2>Password Reset Request</h2>
+            <p>Click the link below to reset your password:</p>
+            <a href='{resetUrl}'>Reset Password</a>
+            <p>If you didn't request this, ignore this email.</p>";
+
+            return await emailService.SendEmailAsync(dto.Email, "Reset Your Password", emailBody);
+        }
+        public async Task<bool> ResetPasswordAsync(ResetPasswordRequestDto dto)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            if (user == null) return false;  // Email doesn't exist
+
+            // Validate new password strength
+            var passwordValidator = new PasswordValidator<ApplicationUser>();
+            var result = await passwordValidator.ValidateAsync(userManager, user, dto.NewPassword);
+            if (!result.Succeeded) return false;  // Password is not strong enough
+
+            var resetResult = await userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+            return resetResult.Succeeded;
+        }
     }
 }
