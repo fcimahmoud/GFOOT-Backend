@@ -1,4 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Shared.AuthenticationModels;
+using System.Text;
+
 namespace GFOOT.API.Extensions
 {
     public static class CoreServicesExtensions
@@ -11,6 +16,7 @@ namespace GFOOT.API.Extensions
             services.AddScoped<IServiceManager, ServiceManager>();
 
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
+
             return services;
         }
     }

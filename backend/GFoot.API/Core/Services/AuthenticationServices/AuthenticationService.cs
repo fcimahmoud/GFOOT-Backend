@@ -1,5 +1,5 @@
 ﻿
-namespace Services
+namespace Services.AuthenticationServices
 {
     internal class AuthenticationService(
         UserManager<ApplicationUser> userManager,
@@ -93,7 +93,7 @@ namespace Services
                     throw new ArgumentException("Invalid UserType specified.");
             }
 
-            await _unitOfWork.SaveChangesAsynk();
+            await _unitOfWork.SaveChangesAsync();
 
             return new UserResultDTO(
              user.DisplayName,
@@ -108,9 +108,10 @@ namespace Services
             // Create Claims 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name , user.UserName),
-                new Claim(ClaimTypes.Email , user.Email),
-                new Claim(ClaimTypes.UserData, user.UserType)
+                new Claim(ClaimTypes.Name , user.UserName!),
+                new Claim(ClaimTypes.Email , user.Email!),
+                new Claim(ClaimTypes.UserData, user.UserType),
+                new Claim(ClaimTypes.NameIdentifier , user.Id),
             };
 
             var roles = await userManager.GetRolesAsync(user);

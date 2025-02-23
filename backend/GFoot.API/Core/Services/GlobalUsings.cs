@@ -2,7 +2,6 @@
 global using Domain.Entities.Identity;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.Extensions.Options;
-global using Shared;
 global using System.Security.Claims;
 global using System.Text;
 global using Microsoft.IdentityModel.Tokens;
@@ -14,3 +13,9 @@ global using Domain.Entities.Individual;
 global using MailKit.Net.Smtp;
 global using MailKit.Security;
 global using MimeKit;
+global using Services.Abstractions.AuthenticationServices.Abstractions;
+global using Shared.AuthenticationModels;
+global using Services.AuthenticationServices;
+global using Services.Abstraction.Individual_Services;
+global using Shared.Individual;
+global using Services.IndividualServices;

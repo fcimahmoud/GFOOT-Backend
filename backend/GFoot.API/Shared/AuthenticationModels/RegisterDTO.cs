@@ -1,5 +1,4 @@
-﻿
-namespace Shared
+﻿namespace Shared.AuthenticationModels
 {
     public record RegisterDTO
     {

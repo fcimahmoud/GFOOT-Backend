@@ -3,7 +3,7 @@ namespace Domain.Contracts
 {
     public interface IUnitOfWork
     {
-        public Task<int> SaveChangesAsynk();
+        public Task<int> SaveChangesAsync();
         public IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>() 
             where TEntity : BaseEntity<TKey>;
     }

@@ -1,5 +1,5 @@
 ﻿
-namespace Services
+namespace Services.AuthenticationServices
 {
     public class EmailService : IEmailService
     {

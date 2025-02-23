@@ -1,7 +1,7 @@
 ﻿
 global using System.ComponentModel.DataAnnotations;
 
-namespace Shared
+namespace Shared.AuthenticationModels
 {
     public record LoginDTO
     {

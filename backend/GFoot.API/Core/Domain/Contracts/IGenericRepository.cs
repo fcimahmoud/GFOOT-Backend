@@ -1,5 +1,6 @@
 ﻿
 global using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Domain.Contracts
 {
@@ -11,5 +12,7 @@ namespace Domain.Contracts
         public Task AddAsync(TEntity entity);
         public void Update(TEntity entity);
         public void Delete(TEntity entity);
+
+        public Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> condition);
     }
 }

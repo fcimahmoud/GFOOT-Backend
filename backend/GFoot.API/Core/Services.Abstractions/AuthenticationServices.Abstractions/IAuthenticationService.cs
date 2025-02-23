@@ -1,7 +1,6 @@
-﻿
-global using Shared;
+﻿global using Shared.AuthenticationModels;
 
-namespace Services.Abstractions
+namespace Services.Abstractions.AuthenticationServices.Abstractions
 {
     public interface IAuthenticationService
     {

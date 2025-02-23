@@ -1,4 +1,6 @@
 ﻿
+using System.Linq.Expressions;
+
 namespace Persistence.Repositories
 {
     public class GenericRepository<TEntity, TKey> (GFootDbContext context)
@@ -19,5 +21,9 @@ namespace Persistence.Repositories
 
         public void Update(TEntity entity)
             => context.Set<TEntity>().Update(entity);
+
+
+        public async Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> condition)
+            => await context.Set<TEntity>().FirstOrDefaultAsync(condition);
     }
 }

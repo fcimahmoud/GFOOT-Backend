@@ -14,3 +14,5 @@ global using Services.Abstractions;
 global using Services;
 global using Shared;
 global using GFoot.API.Middlewares;
+global using Services.Abstractions.AuthenticationServices.Abstractions;
+global using Services.AuthenticationServices;

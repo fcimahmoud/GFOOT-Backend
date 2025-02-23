@@ -16,3 +16,5 @@ D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Present
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\refint\Presentation.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Presentation.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\ref\Presentation.dll
+D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.dll
+D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.pdb

@@ -96,6 +96,9 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
+              "D:\\G_Foot\\backend\\GFoot.API\\Core\\Domain\\Domain.csproj": {
+                "projectPath": "D:\\G_Foot\\backend\\GFoot.API\\Core\\Domain\\Domain.csproj"
+              },
               "D:\\G_Foot\\backend\\GFoot.API\\Shared\\Shared.csproj": {
                 "projectPath": "D:\\G_Foot\\backend\\GFoot.API\\Shared\\Shared.csproj"
               }

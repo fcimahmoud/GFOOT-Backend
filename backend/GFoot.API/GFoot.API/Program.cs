@@ -11,13 +11,16 @@ namespace GFoot.API
                 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
 
             builder.Services.AddCoreServices(builder.Configuration);
+            builder.Services.AddInfraStructureServices(builder.Configuration);
 
-            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+            //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddHttpClient(); // Required for API calls
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+/*
             builder.Services.AddDbContext<GFootDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -35,13 +38,12 @@ namespace GFoot.API
             })
                 .AddEntityFrameworkStores<GFootDbContext>()
                 .AddDefaultTokenProviders();
+*/
 
-            builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-            {
-                options.TokenLifespan = TimeSpan.FromHours(2); // Token expires in 2 hours
-            });
-
-
+            //builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+            //{
+            //    options.TokenLifespan = TimeSpan.FromHours(2); // Token expires in 2 hours
+            //});
 
             var app = builder.Build();
 
@@ -56,6 +58,7 @@ namespace GFoot.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

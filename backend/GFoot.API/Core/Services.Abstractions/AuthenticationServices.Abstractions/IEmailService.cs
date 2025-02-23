@@ -1,5 +1,4 @@
-﻿
-namespace Services.Abstractions
+﻿namespace Services.Abstractions.AuthenticationServices.Abstractions
 {
     public interface IEmailService
     {

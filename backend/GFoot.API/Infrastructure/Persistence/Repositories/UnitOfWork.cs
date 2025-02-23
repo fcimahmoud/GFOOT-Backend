@@ -17,7 +17,7 @@ namespace Persistence.Repositories
           => (IGenericRepository<TEntity, TKey>) // Casting return type to (IGenericRepository)
             _repositories.GetOrAdd(typeof(TEntity).Name, _ => new GenericRepository<TEntity, TKey>(_context));
 
-        public async Task<int> SaveChangesAsynk()
+        public async Task<int> SaveChangesAsync()
             => await _context.SaveChangesAsync();
     }
 }
