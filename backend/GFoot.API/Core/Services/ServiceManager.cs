@@ -29,9 +29,14 @@ namespace Services
         #region Individuals Services
 
         private readonly Lazy<ICalculationsService> _lazyCalculationsService =
-            new(() => new CalculationsService(unitOfWork, httpClient, userManager, logger));
+            new(() => new CalculationsService(unitOfWork, httpClient, logger));
+
+        private readonly Lazy<IRankService> _lazyRankService =
+            new(() => new RankService(unitOfWork));
 
         public ICalculationsService CalculationsService => _lazyCalculationsService.Value;
+
+        public IRankService RankService => _lazyRankService.Value;
 
         #endregion
 

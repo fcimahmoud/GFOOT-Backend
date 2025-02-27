@@ -1,6 +1,6 @@
 ﻿
 global using Domain.Entities;
-using System.Linq.Expressions;
+global using System.Linq.Expressions;
 
 namespace Domain.Contracts
 {
@@ -14,5 +14,9 @@ namespace Domain.Contracts
         public void Delete(TEntity entity);
 
         public Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> condition);
+        public Task<IEnumerable<TEntity>> GetAllByConditionAsync(Expression<Func<TEntity, bool>> condition);
+        public Task<TEntity?> GetWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
+        public Task<IEnumerable<TEntity>> GetAllWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
+        public Task<IEnumerable<TEntity>> GetSortedAsync<TKeySelector>(Expression<Func<TEntity, TKeySelector>> orderBy, bool ascending = true);
     }
 }

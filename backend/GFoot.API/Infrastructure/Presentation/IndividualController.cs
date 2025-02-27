@@ -26,5 +26,25 @@ namespace Presentation.Individual_Controllers
                 CarbonEmission = result.CarbonEmission
             });
         }
+
+        [HttpGet("individual-rank")]
+        [Authorize(Roles = "IndividualUserRole")]
+        public async Task<IActionResult> GetUserRank()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { StatusCode = 401, ErrorMessage = "User not found." });
+
+            var cityRank = await serviceManager.RankService.GetCityRankAsync(userId);
+            var countryRank = await serviceManager.RankService.GetCountryRankAsync(userId);
+            var globalRank = await serviceManager.RankService.GetGlobalRankAsync(userId);
+
+            return Ok(new
+            {
+                CityRank = cityRank,
+                CountryRank = countryRank,
+                GlobalRank = globalRank
+            });
+        }
     }
 }

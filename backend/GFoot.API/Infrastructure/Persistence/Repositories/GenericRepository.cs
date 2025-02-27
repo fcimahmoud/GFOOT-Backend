@@ -22,8 +22,44 @@ namespace Persistence.Repositories
         public void Update(TEntity entity)
             => context.Set<TEntity>().Update(entity);
 
-
+        // Retrieve a single entity by condition
         public async Task<TEntity?> GetByConditionAsync(Expression<Func<TEntity, bool>> condition)
             => await context.Set<TEntity>().FirstOrDefaultAsync(condition);
+
+        // Retrieve all matching entities with optional tracking
+        public async Task<IEnumerable<TEntity>> GetAllByConditionAsync(Expression<Func<TEntity, bool>> condition)
+            => await context.Set<TEntity>().Where(condition).ToListAsync();
+
+        // Retrieve entity with Includes (for related data)
+        public async Task<TEntity?> GetWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            return await query.FirstOrDefaultAsync(condition);
+        }
+
+        // Retrieve all matching entities with Includes
+        public async Task<IEnumerable<TEntity>> GetAllWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            return await query.Where(condition).ToListAsync();
+        }
+
+        // Retrieve a sorted list based on a key selector
+        public async Task<IEnumerable<TEntity>> GetSortedAsync<TKeySelector>(Expression<Func<TEntity, TKeySelector>> orderBy, bool ascending = true)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            query = ascending ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
+
+            return await query.ToListAsync();
+        }
     }
 }

@@ -6,7 +6,6 @@ namespace Services.IndividualServices
     public class CalculationsService (
         IUnitOfWork unitOfWork,
         HttpClient httpClient,
-        UserManager<ApplicationUser> userManager,
         ILogger<CalculationsService> logger
         ) : ICalculationsService
     {
@@ -53,9 +52,6 @@ namespace Services.IndividualServices
 
         public async Task<Activity> LogActivityAsync(string userId, ActivityDTO activityDTO)
         {
-            //var user = await userManager.FindByIdAsync(userId);
-            //if (user == null) throw new Exception("User not found.");
-
             var individualUser = await GetIndividualByAppUserIdAsync(userId);
             if (individualUser == null) throw new Exception("User not found.");
 
