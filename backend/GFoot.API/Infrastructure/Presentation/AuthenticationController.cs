@@ -12,6 +12,15 @@ namespace Presentation
         public async Task<ActionResult<UserResultDTO>> Register(RegisterDTO register)
             => Ok(await serviceManager.AuthenticationService.RegisterAsync(register));
 
+        [HttpPost("Confirm-Email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        {
+            var result = await serviceManager.AuthenticationService.ConfirmEmailAsync(email, token);
+            if (!result) return BadRequest("Email confirmation failed. Invalid or expired token.");
+
+            return Ok("Email confirmed successfully. You can now log in.");
+        }
+
         [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto dto)
         {

@@ -6,6 +6,7 @@ namespace Services.Abstractions.AuthenticationServices.Abstractions
     {
         public Task<UserResultDTO> LoginAsync(LoginDTO loginModel);
         public Task<UserResultDTO> RegisterAsync(RegisterDTO registerModel);
+        public Task<bool> ConfirmEmailAsync(string email, string token);
         public Task<bool> ForgotPasswordAsync(ForgotPasswordRequestDto model);
         public Task<bool> ResetPasswordAsync(ResetPasswordRequestDto model);
     }

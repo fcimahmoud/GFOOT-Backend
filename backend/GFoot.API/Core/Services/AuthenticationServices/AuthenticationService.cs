@@ -1,4 +1,6 @@
 ﻿
+using System.Net;
+
 namespace Services.AuthenticationServices
 {
     internal class AuthenticationService(
@@ -14,8 +16,10 @@ namespace Services.AuthenticationServices
             var user = await userManager.FindByEmailAsync(loginModel.Email);
             if (user == null) throw new UnAuthorizedException($"Email {loginModel.Email} doesn't Exist.");
 
-            var result = await userManager.CheckPasswordAsync(user, loginModel.Password);
+            if (!user.EmailConfirmed)
+                throw new UnAuthorizedException("Email not confirmed. Please check your email.");
 
+            var result = await userManager.CheckPasswordAsync(user, loginModel.Password);
             if (!result) throw new UnAuthorizedException();
 
             return new UserResultDTO(
@@ -95,11 +99,33 @@ namespace Services.AuthenticationServices
 
             await _unitOfWork.SaveChangesAsync();
 
+            // Generate email confirmation token
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedToken = WebUtility.UrlEncode(token); // Ensure URL safe token
+            var confirmationLink = $"https://yourfrontend.com/confirm-email?email={user.Email}&token={encodedToken}";
+
+            var emailBody = $@"
+            <h2>Confirm Your Email</h2>
+            <p>Click the link below to confirm your email:</p>
+            <a href='{confirmationLink}'>Confirm Email</a>
+            <p>If you didn't request this, ignore this email.</p>";
+
+            await emailService.SendEmailAsync(user.Email, "Confirm Your Email", emailBody);
+
             return new UserResultDTO(
              user.DisplayName,
              user.UserType,
              user.Email!,
              await CreateTokenAsync(user));
+        }
+
+        public async Task<bool> ConfirmEmailAsync(string email, string token)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null) return false;
+
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            return result.Succeeded;
         }
         private async Task<string> CreateTokenAsync(ApplicationUser user)
         {

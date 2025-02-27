@@ -1,12 +1,11 @@
 ﻿
 namespace Presentation.Individual_Controllers
 {
-    
+    [Authorize(Roles = "IndividualUserRole")]
     public class IndividualController (IServiceManager serviceManager)
         : ApiController
     {
         [HttpPost("log-activity")]
-        [Authorize(Roles = "IndividualUserRole")]
         public async Task<IActionResult> LogActivity([FromBody] ActivityDTO activity)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -27,8 +26,7 @@ namespace Presentation.Individual_Controllers
             });
         }
 
-        [HttpGet("individual-rank")]
-        [Authorize(Roles = "IndividualUserRole")]
+        [HttpGet("rank")]
         public async Task<IActionResult> GetUserRank()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
