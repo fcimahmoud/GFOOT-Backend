@@ -8,7 +8,9 @@
         public string Email { get; init; }
         public string Password { get; init; }
         public string? PhoneNumber { get; init; }
+        [Required]
         public string? Country { get; set; }
+        [Required]
         public string? City { get; set; }
         public string? IndustryType { get; init; }
     }

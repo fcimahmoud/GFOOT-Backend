@@ -10,6 +10,8 @@ namespace Domain.Entities.Identity
         public required string UserType { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         // Navigational Properties
         public virtual IndividualUser? IndividualUser { get; set; }

@@ -4,7 +4,7 @@ namespace Presentation
     public class AuthenticationController (IServiceManager serviceManager)
         : ApiController
     {
-        [HttpPost("Login")]
+        [HttpGet("Login")]
         public async Task<ActionResult<UserResultDTO>> Login(LoginDTO login)
             => Ok(await serviceManager.AuthenticationService.LoginAsync(login));
 
@@ -21,6 +21,10 @@ namespace Presentation
             return Ok("Email confirmed successfully. You can now log in.");
         }
 
+        [HttpGet("Refresh-Token")]
+        public async Task<ActionResult<UserResultDTO>> RefreshToken([FromBody] RefreshTokenRequestDTO request)
+            => Ok(await serviceManager.AuthenticationService.RefreshTokenAsync(request.RefreshToken));
+
         [HttpPost("Forgot-Password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto dto)
         {
@@ -30,7 +34,7 @@ namespace Presentation
             return Ok("Password reset link sent successfully.");
         }
 
-        [HttpPost("Reset-Password")]
+        [HttpPut("Reset-Password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto dto)
         {
             var result = await serviceManager.AuthenticationService.ResetPasswordAsync(dto);

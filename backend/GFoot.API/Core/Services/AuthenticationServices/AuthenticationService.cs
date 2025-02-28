@@ -1,5 +1,7 @@
 ﻿
-using System.Net;
+global using System.Net;
+global using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services.AuthenticationServices
 {
@@ -22,11 +24,17 @@ namespace Services.AuthenticationServices
             var result = await userManager.CheckPasswordAsync(user, loginModel.Password);
             if (!result) throw new UnAuthorizedException();
 
+            // Generate refresh token and store it in the database
+            user.RefreshToken = GenerateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await userManager.UpdateAsync(user);
+
             return new UserResultDTO(
               user.DisplayName,
               user.UserType,
               user.Email!,
-              await CreateTokenAsync(user));
+              await CreateAccessTokenAsync(user),
+              user.RefreshToken!);
 
         }
         public async Task<UserResultDTO> RegisterAsync(RegisterDTO registerModel)
@@ -99,6 +107,11 @@ namespace Services.AuthenticationServices
 
             await _unitOfWork.SaveChangesAsync();
 
+            // Generate refresh token and store it in the database
+            user.RefreshToken = GenerateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await userManager.UpdateAsync(user);
+
             // Generate email confirmation token
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedToken = WebUtility.UrlEncode(token); // Ensure URL safe token
@@ -116,7 +129,29 @@ namespace Services.AuthenticationServices
              user.DisplayName,
              user.UserType,
              user.Email!,
-             await CreateTokenAsync(user));
+             await CreateAccessTokenAsync(user),
+             user.RefreshToken!);
+        }
+        public async Task<UserResultDTO> RefreshTokenAsync(string refreshToken)
+        {
+            var user = await userManager.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+                throw new UnAuthorizedException("Invalid or expired refresh token.");
+
+            // Generate new tokens
+            var newAccessToken = await CreateAccessTokenAsync(user);
+            var newRefreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await userManager.UpdateAsync(user);
+
+            return new UserResultDTO(
+                user.DisplayName,
+                user.UserType,
+                user.Email!,
+                newAccessToken,
+                newRefreshToken);
         }
 
         public async Task<bool> ConfirmEmailAsync(string email, string token)
@@ -127,7 +162,7 @@ namespace Services.AuthenticationServices
             var result = await userManager.ConfirmEmailAsync(user, token);
             return result.Succeeded;
         }
-        private async Task<string> CreateTokenAsync(ApplicationUser user)
+        private async Task<string> CreateAccessTokenAsync(ApplicationUser user)
         {
             var jwtOptions = options.Value;
 
@@ -158,6 +193,13 @@ namespace Services.AuthenticationServices
 
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        private string GenerateRefreshToken()
+        {
+            var randomBytes = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomBytes);
+            return Convert.ToBase64String(randomBytes);
         }
 
         public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequestDto dto)
