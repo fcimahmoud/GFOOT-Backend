@@ -299,10 +299,6 @@ namespace Persistence.Migrations
                     b.Property<decimal>("CarbonEmission")
                         .HasColumnType("decimal(12,4)");
 
-                    b.Property<string>("CookingMethods")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("DailyInternetUsage")
                         .HasColumnType("int");
 
@@ -316,8 +312,9 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("EnergyEfficiency")
-                        .HasColumnType("decimal(8,2)");
+                    b.Property<string>("EnergyEfficiency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("GroceryBill")
                         .HasColumnType("decimal(8,2)");
@@ -328,10 +325,6 @@ namespace Persistence.Migrations
 
                     b.Property<int>("MonthlyClothingPurchases")
                         .HasColumnType("int");
-
-                    b.Property<string>("RecyclingOptions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sex")
                         .IsRequired()

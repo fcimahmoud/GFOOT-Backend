@@ -10,17 +10,15 @@ namespace Domain.Entities.Individual
         public required string HeatingSource { get; set; }
         public required string AirTravelFreq { get; set; }
         public required string VehicleType { get; set; }
-        public required string CookingMethods { get; set; }
         public required string SocialActivity { get; set; }
         public required string Transport { get; set; }
         public required string WasteBagSize { get; set; }
-        public required string RecyclingOptions { get; set; }
         public int DailyTvTime { get; set; }
         public int MonthlyClothingPurchases { get; set; }
         public int DailyInternetUsage { get; set; }
         public int WasteBagWeeklyCount { get; set; }
         public float VehicleDistanceKm { get; set; }
-        public float EnergyEfficiency { get; set; }
+        public string EnergyEfficiency { get; set; }
         public float GroceryBill { get; set; }
         public DateOnly Date { get; set; }
         public float CarbonEmission { get; set; }

@@ -12,7 +12,15 @@ namespace GFoot.API.Extensions
         {
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddHttpClient(); // Required for API calls
+            services.AddHttpClient();
+            services.AddHttpClient("CarbonFootprintAPI", client =>
+            {
+                client.BaseAddress = new Uri("https://footprint-estimate.up.railway.app/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Add("User-Agent", "MyApp");
+            });
+            services.AddHttpClient("CarbonFootprintAPI")
+                .ConfigureHttpClient(client => client.Timeout = TimeSpan.FromSeconds(30));
 
             services.AddDbContext<GFootDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

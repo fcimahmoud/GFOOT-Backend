@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
+﻿global using Microsoft.Extensions.Logging;
+global using Shared.IndividualModels;
+global using System.Text.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Net.Http;
 
 namespace Services.IndividualServices
 {
@@ -9,47 +12,47 @@ namespace Services.IndividualServices
         ILogger<CalculationsService> logger
         ) : ICalculationsService
     {
-        public async Task<float> CalculateCarbonFootPrintAsync(ActivityDTO activityDTO)
+        public async Task<float> CalculateCarbonFootPrintAsync(ActivityDTO request)
         {
+            try
+            {
+                string ApiUrl = "https://footprint-estimate.up.railway.app/calculate";
+                var queryParams = $"?body_type={request.BodyType}" +
+                                  $"&sex={request.Sex}" +
+                                  $"&diet={request.Diet}" +
+                                  $"&how_often_shower={request.HowOftenShower}" +
+                                  $"&heating_energy_source={request.HeatingEnergySource}" +
+                                  $"&transport={request.Transport}" +
+                                  $"&vehicle_type={request.VehicleType}" +
+                                  $"&social_activity={request.SocialActivity}" +
+                                  $"&monthly_grocery_bill={request.MonthlyGroceryBill}" +
+                                  $"&frequency_of_traveling_by_air={request.FrequencyOfTravelingByAir}" +
+                                  $"&vehicle_monthly_distance_km={request.VehicleMonthlyDistanceKm}" +
+                                  $"&waste_bag_size={request.WasteBagSize}" +
+                                  $"&waste_bag_weekly_count={request.WasteBagWeeklyCount}" +
+                                  $"&how_long_tv_pc_daily_hour={request.HowLongTvPcDailyHour}" +
+                                  $"&how_long_internet_daily_hour={request.HowLongInternetDailyHour}" +
+                                  $"&how_many_new_clothes_monthly={request.HowManyNewClothesMonthly}" +
+                                  $"&energy_efficiency={request.EnergyEfficiency}";
 
-            /*            var payload = new 
-                        {
-                            activityDTO.Sex,
-                            activityDTO.Diet,
-                            activityDTO.BodyType,
-                            activityDTO.ShowerFreq,
-                            activityDTO.HeatingSource,
-                            activityDTO.AirTravelFreq,
-                            activityDTO.VehicleType,
-                            activityDTO.CookingMethods,
-                            activityDTO.SocialActivity,
-                            activityDTO.Transport,
-                            activityDTO.WasteBagSize,
-                            activityDTO.RecyclingOptions,
-                            activityDTO.DailyTvTime,
-                            activityDTO.MonthlyClothingPurchases,
-                            activityDTO.DailyInternetUsage,
-                            activityDTO.WasteBagWeeklyCount,
-                            activityDTO.VehicleDistanceKm,
-                            activityDTO.EnergyEfficiency,
-                            activityDTO.GroceryBill,
-                        };
+                var response = await httpClient.PostAsync(ApiUrl + queryParams, null);
 
-                        // Send a POST Request to the specified URL Containing the value serialized as JSON in the Request Body.
-                        var response = await httpClient.PostAsJsonAsync("http://localhost:5000/predict", payload);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Failed to calculate carbon footprint: {response.StatusCode} - {errorResponse}");
+                }
 
-                        if (!response.IsSuccessStatusCode)
-                            throw new Exception("AI Model failed");
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<CalculationResponseDto>(jsonResponse);
 
-                        // Read the HTTP Content and returns the value that results from deserializing the content.
-                        var result = await response.Content.ReadFromJsonAsync<float>();
-                        return result;*/
-
-            // Placeholder: Replace with actual AI Model logic
-            await Task.Delay(100); // Simulate processing time
-            return new Random().Next(100, 500); // Mock Carbon Footprint in kg CO2
+                return result?.CarbonEmission ?? 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while calling carbon footprint API: {ex.Message}");
+            }
         }
-
         public async Task<Activity> LogActivityAsync(string userId, ActivityDTO activityDTO)
         {
             var individualUser = await GetIndividualByAppUserIdAsync(userId);
@@ -60,22 +63,20 @@ namespace Services.IndividualServices
                 Sex = activityDTO.Sex,
                 Diet = activityDTO.Diet,
                 BodyType = activityDTO.BodyType,
-                ShowerFreq = activityDTO.ShowerFreq,
-                HeatingSource = activityDTO.HeatingSource,
-                AirTravelFreq = activityDTO.AirTravelFreq,
+                ShowerFreq = activityDTO.HowOftenShower,
+                HeatingSource = activityDTO.HeatingEnergySource,
+                AirTravelFreq = activityDTO.FrequencyOfTravelingByAir,
                 VehicleType = activityDTO.VehicleType,
-                CookingMethods = activityDTO.CookingMethods,
                 SocialActivity = activityDTO.SocialActivity,
                 Transport = activityDTO.Transport,
                 WasteBagSize = activityDTO.WasteBagSize,
-                RecyclingOptions = activityDTO.RecyclingOptions,
-                DailyTvTime = activityDTO.DailyTvTime,
-                MonthlyClothingPurchases = activityDTO.MonthlyClothingPurchases,
-                DailyInternetUsage = activityDTO.DailyInternetUsage,
+                DailyTvTime = activityDTO.HowLongTvPcDailyHour,
+                MonthlyClothingPurchases = activityDTO.HowManyNewClothesMonthly,
+                DailyInternetUsage = activityDTO.HowLongInternetDailyHour,
                 WasteBagWeeklyCount = activityDTO.WasteBagWeeklyCount,
-                VehicleDistanceKm = activityDTO.VehicleDistanceKm,
+                VehicleDistanceKm = activityDTO.VehicleMonthlyDistanceKm,
                 EnergyEfficiency = activityDTO.EnergyEfficiency,
-                GroceryBill = activityDTO.GroceryBill,
+                GroceryBill = activityDTO.MonthlyGroceryBill,
             };
 
             activity.Id = Guid.NewGuid().ToString();
