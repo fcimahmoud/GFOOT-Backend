@@ -5,10 +5,14 @@ namespace Services.Abstractions.AuthenticationServices.Abstractions
     public interface IAuthenticationService
     {
         public Task<UserResultDTO> LoginAsync(LoginDTO loginModel);
+        public Task<bool> LogoutAsync(string userId);
         public Task<UserResultDTO> RegisterAsync(RegisterDTO registerModel);
-        public Task<bool> ConfirmEmailAsync(string email, string token);
+        public Task<bool> ConfirmEmailAsync(string email, string otp);
         public Task<UserResultDTO> RefreshTokenAsync(string refreshToken);
         public Task<bool> ForgotPasswordAsync(ForgotPasswordRequestDto model);
         public Task<bool> ResetPasswordAsync(ResetPasswordRequestDto model);
+
+        public Task<bool> ResendEmailConfirmationOTPAsync(string email);
+        public Task<bool> ResendPasswordResetOTPAsync(string email);
     }
 }

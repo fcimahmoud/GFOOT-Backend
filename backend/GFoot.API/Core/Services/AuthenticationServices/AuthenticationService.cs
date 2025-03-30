@@ -37,6 +37,19 @@ namespace Services.AuthenticationServices
               user.RefreshToken!);
 
         }
+        public async Task<bool> LogoutAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            // Invalidate Refresh Token
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+
+            var result = await userManager.UpdateAsync(user);
+            return result.Succeeded;
+        }
+
         public async Task<UserResultDTO> RegisterAsync(RegisterDTO registerModel)
         {
             var user = new ApplicationUser
@@ -107,23 +120,19 @@ namespace Services.AuthenticationServices
 
             await _unitOfWork.SaveChangesAsync();
 
-            // Generate refresh token and store it in the database
-            user.RefreshToken = GenerateRefreshToken();
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            // Generate OTP (6-digit code)
+            var otp = new Random().Next(100000, 999999).ToString();
+            user.EmailConfirmationOTP = otp;
+            user.OTPExpiryTime = DateTime.UtcNow.AddMinutes(10); // OTP expires in 10 minutes
             await userManager.UpdateAsync(user);
 
-            // Generate email confirmation token
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            var encodedToken = WebUtility.UrlEncode(token); // Ensure URL safe token
-            var confirmationLink = $"https://yourfrontend.com/confirm-email?email={user.Email}&token={encodedToken}";
-
+            // Send OTP via email
             var emailBody = $@"
-            <h2>Confirm Your Email</h2>
-            <p>Click the link below to confirm your email:</p>
-            <a href='{confirmationLink}'>Confirm Email</a>
-            <p>If you didn't request this, ignore this email.</p>";
+                            <h2>Email Verification</h2>
+                            <p>Your OTP code for email verification is: <strong>{otp}</strong></p>
+                            <p>This OTP will expire in 10 minutes.</p>";
 
-            await emailService.SendEmailAsync(user.Email, "Confirm Your Email", emailBody);
+            await emailService.SendEmailAsync(user.Email, "Verify Your Email", emailBody);
 
             return new UserResultDTO(
              user.DisplayName,
@@ -154,13 +163,21 @@ namespace Services.AuthenticationServices
                 newRefreshToken);
         }
 
-        public async Task<bool> ConfirmEmailAsync(string email, string token)
+        public async Task<bool> ConfirmEmailAsync(string email, string otp)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user == null) return false;
 
-            var result = await userManager.ConfirmEmailAsync(user, token);
-            return result.Succeeded;
+            if (user.EmailConfirmationOTP != otp || user.OTPExpiryTime <= DateTime.UtcNow)
+                throw new ValidationException(new List<string> { "Invalid or expired OTP." });
+
+            // Confirm email
+            user.EmailConfirmed = true;
+            user.EmailConfirmationOTP = null; // Clear OTP after verification
+            user.OTPExpiryTime = null;
+            await userManager.UpdateAsync(user);
+
+            return true;
         }
         private async Task<string> CreateAccessTokenAsync(ApplicationUser user)
         {
@@ -207,31 +224,95 @@ namespace Services.AuthenticationServices
             var user = await userManager.FindByEmailAsync(dto.Email);
             if (user == null) return false;  // Email doesn't exist
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(user);
-            var resetUrl = $"https://localhost:5001/api/Authentication/Reset-Password?email={dto.Email}&token={token}";
-            // var resetUrl = $"{_config["AppSettings:FrontendUrl"]}/Reset-Password?email={email}&token={token}";
+            // Generate a 6-digit OTP
+            var otp = new Random().Next(100000, 999999).ToString();
 
+            // Store OTP and expiration in database
+            user.PasswordResetOTP = otp;
+            user.PasswordResetOTPExpiry = DateTime.UtcNow.AddMinutes(10); // OTP valid for 10 minutes
+            await userManager.UpdateAsync(user);
 
+            // Send OTP via email
             var emailBody = $@"
-            <h2>Password Reset Request</h2>
-            <p>Click the link below to reset your password:</p>
-            <a href='{resetUrl}'>Reset Password</a>
-            <p>If you didn't request this, ignore this email.</p>";
+                            <h2>Password Reset OTP</h2>
+                            <p>Use the following OTP to reset your password:</p>
+                            <h3>{otp}</h3>
+                            <p>This OTP will expire in 10 minutes.</p>
+                            <p>If you didn't request this, ignore this email.</p>";
 
-            return await emailService.SendEmailAsync(dto.Email, "Reset Your Password", emailBody);
+            return await emailService.SendEmailAsync(user.Email, "Password Reset OTP", emailBody);
         }
         public async Task<bool> ResetPasswordAsync(ResetPasswordRequestDto dto)
         {
             var user = await userManager.FindByEmailAsync(dto.Email);
             if (user == null) return false;  // Email doesn't exist
+            
+            // Check if OTP is valid
+            if (user.PasswordResetOTP != dto.Otp || user.PasswordResetOTPExpiry < DateTime.UtcNow)
+            {
+                throw new ValidationException(new List<string> { "Invalid or expired OTP." });
+            }
 
-            // Validate new password strength
-            var passwordValidator = new PasswordValidator<ApplicationUser>();
-            var result = await passwordValidator.ValidateAsync(userManager, user, dto.NewPassword);
-            if (!result.Succeeded) return false;  // Password is not strong enough
+            // Reset Password
+            var resetResult = await userManager.RemovePasswordAsync(user);
+            if (!resetResult.Succeeded) return false;
 
-            var resetResult = await userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
-            return resetResult.Succeeded;
+            resetResult = await userManager.AddPasswordAsync(user, dto.NewPassword);
+            if (!resetResult.Succeeded) return false;
+
+            // Clear OTP after successful reset
+            user.PasswordResetOTP = null;
+            user.PasswordResetOTPExpiry = null;
+            await userManager.UpdateAsync(user);
+
+            return true;
+        }
+
+        public async Task<bool> ResendEmailConfirmationOTPAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null) throw new NotFoundException("User not found.");
+
+            // Generate a new 6-digit OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            // Update OTP in the database
+            user.EmailConfirmationOTP = otp;
+            user.OTPExpiryTime = DateTime.UtcNow.AddMinutes(10); // OTP valid for 10 minutes
+            await userManager.UpdateAsync(user);
+
+            // Send the new OTP via email
+            var emailBody = $@"
+                            <h2>Resend OTP Request</h2>
+                            <p>Your new OTP for email confirmation is:</p>
+                            <h3>{otp}</h3>
+                            <p>This OTP will expire in 10 minutes.</p>
+                            <p>If you didn't request this, please ignore this email.</p>";
+
+            return await emailService.SendEmailAsync(user.Email, "Resend OTP", emailBody);
+        }
+        public async Task<bool> ResendPasswordResetOTPAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user == null) throw new NotFoundException("User not found.");
+
+            // Generate a new 6-digit OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            // Update OTP in the database
+            user.PasswordResetOTP = otp;
+            user.PasswordResetOTPExpiry = DateTime.UtcNow.AddMinutes(10); // OTP valid for 10 minutes
+            await userManager.UpdateAsync(user);
+
+            // Send the new OTP via email
+            var emailBody = $@"
+                            <h2>Resend OTP Request</h2>
+                            <p>Your new OTP to reset your password is:</p>
+                            <h3>{otp}</h3>
+                            <p>This OTP will expire in 10 minutes.</p>
+                            <p>If you didn't request this, please ignore this email.</p>";
+
+            return await emailService.SendEmailAsync(user.Email, "Resend OTP", emailBody);
         }
     }
 }

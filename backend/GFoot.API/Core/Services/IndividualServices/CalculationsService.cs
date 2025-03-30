@@ -1,8 +1,8 @@
 ﻿global using Microsoft.Extensions.Logging;
 global using Shared.IndividualModels;
 global using System.Text.Json;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Net.Http;
+using Shared.Individual;
+using System.Net.Http.Json;
 
 namespace Services.IndividualServices
 {
@@ -16,26 +16,31 @@ namespace Services.IndividualServices
         {
             try
             {
-                string ApiUrl = "https://footprint-estimate.up.railway.app/calculate";
-                var queryParams = $"?body_type={request.BodyType}" +
-                                  $"&sex={request.Sex}" +
-                                  $"&diet={request.Diet}" +
-                                  $"&how_often_shower={request.HowOftenShower}" +
-                                  $"&heating_energy_source={request.HeatingEnergySource}" +
-                                  $"&transport={request.Transport}" +
-                                  $"&vehicle_type={request.VehicleType}" +
-                                  $"&social_activity={request.SocialActivity}" +
-                                  $"&monthly_grocery_bill={request.MonthlyGroceryBill}" +
-                                  $"&frequency_of_traveling_by_air={request.FrequencyOfTravelingByAir}" +
-                                  $"&vehicle_monthly_distance_km={request.VehicleMonthlyDistanceKm}" +
-                                  $"&waste_bag_size={request.WasteBagSize}" +
-                                  $"&waste_bag_weekly_count={request.WasteBagWeeklyCount}" +
-                                  $"&how_long_tv_pc_daily_hour={request.HowLongTvPcDailyHour}" +
-                                  $"&how_long_internet_daily_hour={request.HowLongInternetDailyHour}" +
-                                  $"&how_many_new_clothes_monthly={request.HowManyNewClothesMonthly}" +
-                                  $"&energy_efficiency={request.EnergyEfficiency}";
+                var queryParams = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "body_type", request.BodyType },
+                    { "sex", request.Sex },
+                    { "diet", request.Diet },
+                    { "how_often_shower", request.HowOftenShower },
+                    { "heating_energy_source", request.HeatingEnergySource },
+                    { "transport", request.Transport },
+                    { "vehicle_type", request.VehicleType },
+                    { "social_activity", request.SocialActivity },
+                    { "monthly_grocery_bill", request.MonthlyGroceryBill.ToString() },
+                    { "frequency_of_traveling_by_air", request.FrequencyOfTravelingByAir },
+                    { "vehicle_monthly_distance_km", request.VehicleMonthlyDistanceKm.ToString() },
+                    { "waste_bag_size", request.WasteBagSize },
+                    { "waste_bag_weekly_count", request.WasteBagWeeklyCount.ToString() },
+                    { "how_long_tv_pc_daily_hour", request.HowLongTvPcDailyHour.ToString() },
+                    { "how_long_internet_daily_hour", request.HowLongInternetDailyHour.ToString() },
+                    { "how_many_new_clothes_monthly", request.HowManyNewClothesMonthly.ToString() },
+                    { "energy_efficiency", request.EnergyEfficiency }
+                });
 
-                var response = await httpClient.PostAsync(ApiUrl + queryParams, null);
+                var response = await httpClient.GetAsync($"http://127.0.0.1:8000/calculate?{await queryParams.ReadAsStringAsync()}");
+
+
+                //var response = await httpClient.PostAsync(ApiUrl, payload);
 
                 if (!response.IsSuccessStatusCode)
                 {

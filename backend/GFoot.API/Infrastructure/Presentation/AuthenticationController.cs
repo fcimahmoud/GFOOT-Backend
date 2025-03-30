@@ -7,16 +7,33 @@ namespace Presentation
         [HttpGet("Login")]
         public async Task<ActionResult<UserResultDTO>> Login(LoginDTO login)
             => Ok(await serviceManager.AuthenticationService.LoginAsync(login));
+        
+        [HttpPost("Logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("Invalid user token");
+
+            var result = await serviceManager.AuthenticationService.LogoutAsync(userId);
+
+            if (!result)
+                return BadRequest("Logout failed");
+
+            return Ok(new { message = "Logout successful" });
+        }
 
         [HttpPost("Register")]
         public async Task<ActionResult<UserResultDTO>> Register(RegisterDTO register)
             => Ok(await serviceManager.AuthenticationService.RegisterAsync(register));
 
         [HttpPost("Confirm-Email")]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string otp)
         {
-            var result = await serviceManager.AuthenticationService.ConfirmEmailAsync(email, token);
-            if (!result) return BadRequest("Email confirmation failed. Invalid or expired token.");
+            var result = await serviceManager.AuthenticationService.ConfirmEmailAsync(email, otp);
+            if (!result) return BadRequest("Email confirmation failed. Invalid or expired OTP.");
 
             return Ok("Email confirmed successfully. You can now log in.");
         }
@@ -31,16 +48,34 @@ namespace Presentation
             var result = await serviceManager.AuthenticationService.ForgotPasswordAsync(dto);
             if (!result) return BadRequest("Email not found or failed to send email.");
 
-            return Ok("Password reset link sent successfully.");
+            return Ok("Password reset otp sent successfully.");
         }
 
         [HttpPut("Reset-Password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto dto)
         {
             var result = await serviceManager.AuthenticationService.ResetPasswordAsync(dto);
-            if (!result) return BadRequest("Invalid token or password reset failed.");
+            if (!result) return BadRequest("Invalid otp or password reset failed.");
 
             return Ok("Password reset successfully.");
+        }
+
+        [HttpPost("Resend-EmailConfirmation-Otp")]
+        public async Task<IActionResult> ResendEmailConfirmationOTP([FromBody] ResendOTPRequestDto request)
+        {
+            var success = await serviceManager.AuthenticationService.ResendEmailConfirmationOTPAsync(request.Email);
+            if (!success) return BadRequest("Failed to resend OTP.");
+
+            return Ok(new { Message = "OTP resent successfully. Please check your email." });
+        }
+
+        [HttpPost("Resend-PasswordReset-Otp")]
+        public async Task<IActionResult> ResendPasswordResetOTP([FromBody] ResendOTPRequestDto request)
+        {
+            var success = await serviceManager.AuthenticationService.ResendPasswordResetOTPAsync(request.Email);
+            if (!success) return BadRequest("Failed to resend OTP.");
+
+            return Ok(new { Message = "OTP resent successfully. Please check your email." });
         }
     }
 }
