@@ -6,7 +6,7 @@ namespace Presentation.Individual_Controllers
         : ApiController
     {
         [HttpPost("log-activity")]
-        public async Task<IActionResult> LogActivity([FromBody] ActivityDTO activity)
+        public async Task<IActionResult> LogActivity([FromQuery] ActivityDTO activity)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized(new {

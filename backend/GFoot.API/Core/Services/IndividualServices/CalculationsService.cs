@@ -1,8 +1,6 @@
 ﻿global using Microsoft.Extensions.Logging;
 global using Shared.IndividualModels;
 global using System.Text.Json;
-using Shared.Individual;
-using System.Net.Http.Json;
 
 namespace Services.IndividualServices
 {
@@ -37,7 +35,7 @@ namespace Services.IndividualServices
                     { "energy_efficiency", request.EnergyEfficiency }
                 });
 
-                var response = await httpClient.GetAsync($"http://127.0.0.1:8000/calculate?{await queryParams.ReadAsStringAsync()}");
+                var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/calculate?{await queryParams.ReadAsStringAsync()}");
 
 
                 //var response = await httpClient.PostAsync(ApiUrl, payload);
@@ -49,7 +47,11 @@ namespace Services.IndividualServices
                 }
 
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<CalculationResponseDto>(jsonResponse);
+                Console.WriteLine("API Response: " + jsonResponse);
+
+                var result = JsonSerializer.Deserialize<CalculationResponseDto>(jsonResponse,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
 
                 return result?.CarbonEmission ?? 0;
             }
