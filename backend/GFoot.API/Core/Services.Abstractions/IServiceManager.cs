@@ -11,5 +11,7 @@ namespace Services.Abstractions
         public IEmailService EmailService { get; }
         public ICalculationsService CalculationsService { get; }
         public IRankService RankService { get; }
+        public IRecommendationService RecommendationService { get; }
+
     }
 }

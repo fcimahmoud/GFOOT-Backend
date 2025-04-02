@@ -20,6 +20,9 @@ namespace Presentation.Individual_Controllers
                 ErrorMessage = "Failed to log activity. Please check your input data."
             });
 
+            await serviceManager.RecommendationService.CreateRecommendationAsync(userId, activity, result.CarbonEmission);
+
+
             return Ok(new {
                 Message = "Activity logged successfully.",
                 CarbonEmission = result.CarbonEmission
@@ -43,6 +46,25 @@ namespace Presentation.Individual_Controllers
                 CountryRank = countryRank,
                 GlobalRank = globalRank
             });
+        }
+
+        [HttpGet("recommendations")]
+        public async Task<IActionResult> GetUserRecommendation()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { StatusCode = 401, ErrorMessage = "User not found." });
+
+            var recommendations = await serviceManager.RecommendationService.GetAllRecommendationsAsync(userId);
+            return Ok(recommendations);
+        }
+
+        [HttpGet("recommendations/{recId}")]
+        public async Task<IActionResult> GetRecommendationById(string recId)
+        {
+            var recommendations = await serviceManager.RecommendationService.GetRecommendationAsync(recId);
+            return Ok(recommendations);
         }
     }
 }

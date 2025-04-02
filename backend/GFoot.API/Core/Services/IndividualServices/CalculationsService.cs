@@ -37,9 +37,6 @@ namespace Services.IndividualServices
 
                 var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/calculate?{await queryParams.ReadAsStringAsync()}");
 
-
-                //var response = await httpClient.PostAsync(ApiUrl, payload);
-
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorResponse = await response.Content.ReadAsStringAsync();
