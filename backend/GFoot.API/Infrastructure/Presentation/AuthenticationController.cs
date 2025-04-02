@@ -4,7 +4,13 @@ namespace Presentation
     public class AuthenticationController (IServiceManager serviceManager)
         : ApiController
     {
-        [HttpGet("Login")]
+        [HttpPost("social-login")]
+        public async Task<IActionResult> SocialLogin([FromBody] SocialLoginDTO loginDto)
+        {
+            var result = await serviceManager.AuthenticationService.SocialLoginAsync(loginDto);
+            return Ok(result);
+        }
+        [HttpPost("Login")]
         public async Task<ActionResult<UserResultDTO>> Login(LoginDTO login)
             => Ok(await serviceManager.AuthenticationService.LoginAsync(login));
         

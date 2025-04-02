@@ -4,6 +4,8 @@ namespace Services.Abstractions.AuthenticationServices.Abstractions
 {
     public interface IAuthenticationService
     {
+        public Task<UserResultDTO> SocialLoginAsync(SocialLoginDTO loginDto);
+
         public Task<UserResultDTO> LoginAsync(LoginDTO loginModel);
         public Task<bool> LogoutAsync(string userId);
         public Task<UserResultDTO> RegisterAsync(RegisterDTO registerModel);

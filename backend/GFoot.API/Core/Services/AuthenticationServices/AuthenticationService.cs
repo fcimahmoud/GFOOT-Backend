@@ -314,5 +314,72 @@ namespace Services.AuthenticationServices
 
             return await emailService.SendEmailAsync(user.Email, "Resend OTP", emailBody);
         }
+
+
+        public async Task<UserResultDTO> SocialLoginAsync(SocialLoginDTO loginDto)
+        {
+            var payload = await VerifySocialTokenAsync(loginDto.Provider, loginDto.IdToken);
+            if (payload == null)
+                throw new UnAuthorizedException("Invalid social authentication token.");
+
+            var user = await userManager.FindByEmailAsync(payload.email);
+
+            if (user == null)
+            {
+                // Create a new user
+                user = new ApplicationUser
+                {
+                    Email = payload.email,
+                    DisplayName = payload.name,
+                    UserName = payload.email,
+                    EmailConfirmed = true, // Since OAuth already verifies email
+                    UserType = "individualuser"
+                };
+
+                var createResult = await userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    var errors = createResult.Errors.Select(e => e.Description).ToList();
+                    throw new ValidationException(errors);
+                }
+
+                // Assign default role
+                await userManager.AddToRoleAsync(user, "IndividualUserRole");
+            }
+
+            // Generate new tokens
+            var accessToken = await CreateAccessTokenAsync(user);
+            var refreshToken = GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+            await userManager.UpdateAsync(user);
+
+            return new UserResultDTO(
+                user.DisplayName,
+                user.UserType,
+                user.Email!,
+                accessToken,
+                refreshToken);
+        }
+
+        private async Task<SocialUserPayload?> VerifySocialTokenAsync(string provider, string idToken)
+        {
+            string validationUrl = provider.ToLower() switch
+            {
+                "google" => $"https://oauth2.googleapis.com/tokeninfo?id_token={idToken}",
+                "facebook" => $"https://graph.facebook.com/me?fields=id,name,email&access_token={idToken}",
+                //"apple" => "https://appleid.apple.com/auth/keys", // Apple token validation requires extra steps
+                _ => throw new ArgumentException("Unsupported provider")
+            };
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(validationUrl);
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<SocialUserPayload>(content);
+        }
+
     }
 }
