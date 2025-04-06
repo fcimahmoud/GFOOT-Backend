@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Net.Http;
-
+﻿
 namespace Services
 {
     public class ServiceManager(
@@ -23,6 +21,15 @@ namespace Services
 
         public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
         public IEmailService EmailService => _lazyEmailService.Value;
+
+        #endregion
+
+        #region Dashboard Services
+
+        private readonly Lazy<IDashboardService> _lazyDashboardService =
+            new(() => new DashboardService(unitOfWork, userManager));
+
+        public IDashboardService DashboardService => _lazyDashboardService.Value;
 
         #endregion
 

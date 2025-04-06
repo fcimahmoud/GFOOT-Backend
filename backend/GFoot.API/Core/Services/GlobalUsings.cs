@@ -20,3 +20,4 @@ global using Services.Abstraction.Individual_Services;
 global using Shared.Individual;
 global using Services.IndividualServices;
 global using Services.Abstractions.Individual_Services.Abstraction;
+global using Services.DashboardServices;

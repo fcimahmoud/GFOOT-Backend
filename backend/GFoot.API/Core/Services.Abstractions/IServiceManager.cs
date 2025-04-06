@@ -2,6 +2,7 @@
 global using Services.Abstractions.AuthenticationServices.Abstractions;
 global using Services.Abstraction.Individual_Services;
 global using Services.Abstractions.Individual_Services.Abstraction;
+global using Services.Abstractions.Dashboard_Services.Abstraction;
 
 namespace Services.Abstractions
 {
@@ -12,6 +13,7 @@ namespace Services.Abstractions
         public ICalculationsService CalculationsService { get; }
         public IRankService RankService { get; }
         public IRecommendationService RecommendationService { get; }
+        public IDashboardService DashboardService { get; }
 
     }
 }

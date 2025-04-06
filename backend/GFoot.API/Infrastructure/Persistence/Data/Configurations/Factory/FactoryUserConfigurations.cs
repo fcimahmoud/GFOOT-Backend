@@ -14,22 +14,22 @@ namespace Persistence.Data.Configurations.Factory
             builder.HasMany(R => R.Reports)
                 .WithOne(F => F.Factory)
                 .HasForeignKey(R => R.FactoryUserId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(F => F.SensorData)
                 .WithOne(S => S.Factory)
                 .HasForeignKey(S => S.FactoryUserId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(E => E.FactoryEmissions)
                 .WithOne(F => F.Factory)
                 .HasForeignKey(F => F.FactoryUserId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(N => N.FactoryRecomendations)
                 .WithOne(F => F.FactoryUser)
                 .HasForeignKey(F => F.FactoryId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

@@ -587,7 +587,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Identity.ApplicationUser", "ApplicationUser")
                         .WithOne("EnvironmentalAgent")
                         .HasForeignKey("Domain.Entities.Factory.EnvironmentalAgent", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ApplicationUser");
                 });
@@ -616,7 +616,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Factory.FactoryUser", "Factory")
                         .WithMany("FactoryEmissions")
                         .HasForeignKey("FactoryUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Factory");
                 });
@@ -626,7 +626,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Factory.FactoryUser", "FactoryUser")
                         .WithMany("FactoryRecomendations")
                         .HasForeignKey("FactoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("FactoryUser");
                 });
@@ -636,7 +636,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Identity.ApplicationUser", "ApplicationUser")
                         .WithOne("FactoryUser")
                         .HasForeignKey("Domain.Entities.Factory.FactoryUser", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ApplicationUser");
                 });
@@ -646,12 +646,12 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Factory.EnvironmentalAgent", "EnvironmentalAgent")
                         .WithMany("Reports")
                         .HasForeignKey("EnvironmentalAgentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.Factory.FactoryUser", "Factory")
                         .WithMany("Reports")
                         .HasForeignKey("FactoryUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("EnvironmentalAgent");
 
@@ -663,7 +663,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Factory.FactoryUser", "Factory")
                         .WithMany("SensorData")
                         .HasForeignKey("FactoryUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Factory");
                 });
@@ -693,7 +693,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Identity.ApplicationUser", "ApplicationUser")
                         .WithOne("IndividualUser")
                         .HasForeignKey("Domain.Entities.Individual.IndividualUser", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("ApplicationUser");
                 });

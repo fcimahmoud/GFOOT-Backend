@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>D:\G_Foot\backend\GFoot.API\GFoot.API\Properties\PublishProfiles\site18998-WebDeploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>site18998-WebDeploy1</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

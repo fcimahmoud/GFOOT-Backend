@@ -11,7 +11,7 @@ namespace Persistence.Data.Configurations.Factory
             builder.HasMany(E => E.Reports)
                 .WithOne(R => R.EnvironmentalAgent)
                 .HasForeignKey(R => R.EnvironmentalAgentId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
         }
     }

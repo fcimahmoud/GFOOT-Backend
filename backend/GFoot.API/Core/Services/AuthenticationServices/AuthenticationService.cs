@@ -97,6 +97,8 @@ namespace Services.AuthenticationServices
                     break;
 
                 case "factoryuser":
+                    user.EmailConfirmed = true;
+                    await userManager.UpdateAsync(user);
                     var factoryRepo = _unitOfWork.GetRepository<FactoryUser, string>();
                     await factoryRepo.AddAsync(new FactoryUser
                     {
@@ -106,6 +108,8 @@ namespace Services.AuthenticationServices
                     break;
 
                 case "environmentalagent":
+                    user.EmailConfirmed = true;
+                    await userManager.UpdateAsync(user);
                     var agentRepo = _unitOfWork.GetRepository<EnvironmentalAgent, string>();
                     await agentRepo.AddAsync(new EnvironmentalAgent { ApplicationUserId = user.Id });
                     break;
