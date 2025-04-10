@@ -1,11 +1,12 @@
 ﻿
 global using System.Net;
 global using System.Security.Cryptography;
+using Domain.Entities.Individual;
 using Microsoft.EntityFrameworkCore;
 
 namespace Services.AuthenticationServices
 {
-    internal class AuthenticationService(
+    public class AuthenticationService(
         UserManager<ApplicationUser> userManager,
         IUnitOfWork _unitOfWork,
         IOptions<JwtOptions> options,
@@ -30,6 +31,7 @@ namespace Services.AuthenticationServices
             await userManager.UpdateAsync(user);
 
             return new UserResultDTO(
+              user.Id,
               user.DisplayName,
               user.UserType,
               user.Email!,
@@ -124,21 +126,26 @@ namespace Services.AuthenticationServices
 
             await _unitOfWork.SaveChangesAsync();
 
-            // Generate OTP (6-digit code)
-            var otp = new Random().Next(100000, 999999).ToString();
-            user.EmailConfirmationOTP = otp;
-            user.OTPExpiryTime = DateTime.UtcNow.AddMinutes(10); // OTP expires in 10 minutes
-            await userManager.UpdateAsync(user);
+            if(registerModel.UserType == "individualuser")
+            {
+                // Generate OTP (6-digit code)
+                var otp = new Random().Next(100000, 999999).ToString();
+                user.EmailConfirmationOTP = otp;
+                user.OTPExpiryTime = DateTime.UtcNow.AddMinutes(10); // OTP expires in 10 minutes
+                await userManager.UpdateAsync(user);
 
-            // Send OTP via email
-            var emailBody = $@"
+                // Send OTP via email
+                var emailBody = $@"
                             <h2>Email Verification</h2>
                             <p>Your OTP code for email verification is: <strong>{otp}</strong></p>
                             <p>This OTP will expire in 10 minutes.</p>";
 
-            await emailService.SendEmailAsync(user.Email, "Verify Your Email", emailBody);
+                await emailService.SendEmailAsync(user.Email, "Verify Your Email", emailBody);
+            }
+
 
             return new UserResultDTO(
+             user.Id,
              user.DisplayName,
              user.UserType,
              user.Email!,
@@ -160,6 +167,7 @@ namespace Services.AuthenticationServices
             await userManager.UpdateAsync(user);
 
             return new UserResultDTO(
+                user.Id,
                 user.DisplayName,
                 user.UserType,
                 user.Email!,
@@ -360,6 +368,7 @@ namespace Services.AuthenticationServices
             await userManager.UpdateAsync(user);
 
             return new UserResultDTO(
+                user.Id,
                 user.DisplayName,
                 user.UserType,
                 user.Email!,

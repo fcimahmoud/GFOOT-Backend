@@ -20,6 +20,17 @@ namespace GFoot.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CORSPolicy", policy =>
+                {
+                    policy.WithOrigins("http://localhost:55260")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
             var app = builder.Build();
 
             app.UseCustomExceptionMiddleware();
@@ -31,6 +42,7 @@ namespace GFoot.API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CORSPolicy");
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

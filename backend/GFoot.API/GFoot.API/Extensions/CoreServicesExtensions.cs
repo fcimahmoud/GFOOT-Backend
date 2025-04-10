@@ -12,7 +12,7 @@ namespace GFOOT.API.Extensions
         {
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddScoped<IEmailService, EmailService>();
-
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IServiceManager, ServiceManager>();
 
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));

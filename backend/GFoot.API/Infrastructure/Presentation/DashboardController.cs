@@ -3,6 +3,7 @@ using Shared.DashboardModels;
 
 namespace Presentation
 {
+    [Authorize(Roles ="AdminRole")]
     public class DashboardController(IServiceManager serviceManager)
         : ApiController
     {
@@ -11,9 +12,9 @@ namespace Presentation
             => Ok(await serviceManager.AuthenticationService.RegisterAsync(register));
 
         [HttpPut("update-factory/{factoryId}")]
-        public async Task<ActionResult> UpdateFactory(UpdateFactoryDto updateFactoryDto, string agentId)
+        public async Task<ActionResult> UpdateFactory(UpdateFactoryDto updateFactoryDto, string factoryId)
         {
-            await serviceManager.DashboardService.UpdateFactoryAsync(updateFactoryDto, agentId);
+            await serviceManager.DashboardService.UpdateFactoryAsync(updateFactoryDto, factoryId);
             return Ok("Factory Updated Successfully");
         }
 

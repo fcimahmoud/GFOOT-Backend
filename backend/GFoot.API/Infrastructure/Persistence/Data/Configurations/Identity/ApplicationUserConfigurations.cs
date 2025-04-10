@@ -14,17 +14,17 @@ namespace Persistence.Data.Configurations.Identity
             builder.HasOne(A => A.IndividualUser)
                    .WithOne(I => I.ApplicationUser)
                    .HasForeignKey<IndividualUser>(I => I.ApplicationUserId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(A => A.FactoryUser)
                    .WithOne(F => F.ApplicationUser)
                    .HasForeignKey<FactoryUser>(F => F.ApplicationUserId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(A => A.EnvironmentalAgent)
                    .WithOne(E => E.ApplicationUser)
                    .HasForeignKey<EnvironmentalAgent>(E => E.ApplicationUserId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -8,7 +8,8 @@ namespace Services
         IOptions<EmailSettings> emailSettings,
         IEmailService emailService,
         HttpClient httpClient,
-        ILogger<CalculationsService> logger
+        ILogger<CalculationsService> logger,
+        IAuthenticationService authenticationService
         )
         : IServiceManager
     {
@@ -27,7 +28,7 @@ namespace Services
         #region Dashboard Services
 
         private readonly Lazy<IDashboardService> _lazyDashboardService =
-            new(() => new DashboardService(unitOfWork, userManager));
+            new(() => new DashboardService(unitOfWork, userManager, authenticationService));
 
         public IDashboardService DashboardService => _lazyDashboardService.Value;
 

@@ -1,13 +1,18 @@
 ﻿
 global using Services.Abstractions.Dashboard_Services.Abstraction;
+using Microsoft.AspNetCore.Authorization;
 using Shared.DashboardModels;
+using System.Data;
 
 namespace Services.DashboardServices
 {
-    public class DashboardService (IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+    public class DashboardService (IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IAuthenticationService authenticationService)
         : IDashboardService
     {
-
+        public async Task<UserResultDTO> AddFactoryAsync(RegisterDTO registerModel)
+        {
+            return await authenticationService.RegisterAsync(registerModel);
+        }
         public async Task DeleteFactoryAsync(string factoryId)
         {
             var appUser = await userManager.FindByIdAsync(factoryId);
@@ -45,6 +50,10 @@ namespace Services.DashboardServices
             await unitOfWork.SaveChangesAsync();
         }
 
+        public async Task<UserResultDTO> AddAgentAsync(RegisterDTO registerModel)
+        {
+            return await authenticationService.RegisterAsync(registerModel);
+        }
         public async Task DeleteAgentAsync(string agentId)
         {
             var appUser = await userManager.FindByIdAsync(agentId);
@@ -72,5 +81,7 @@ namespace Services.DashboardServices
 
             await userManager.UpdateAsync(appUser);
         }
+
+
     }
 }
