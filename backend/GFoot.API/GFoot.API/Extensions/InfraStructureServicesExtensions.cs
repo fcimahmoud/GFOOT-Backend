@@ -19,8 +19,6 @@ namespace GFoot.API.Extensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.DefaultRequestHeaders.Add("User-Agent", "MyApp");
             });
-            services.AddHttpClient("CarbonFootprintAPI")
-                .ConfigureHttpClient(client => client.Timeout = TimeSpan.FromSeconds(30));
 
             services.AddDbContext<GFootDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

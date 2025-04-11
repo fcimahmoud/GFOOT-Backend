@@ -45,11 +45,13 @@ namespace Services
         private readonly Lazy<IRecommendationService> _lazyRecommendationService =
             new(() => new RecommendationService(unitOfWork, httpClient));
 
-        public ICalculationsService CalculationsService => _lazyCalculationsService.Value;
+        private readonly Lazy<IVisualizationService> _lazyVisualizationService =
+            new(() => new VisualizationService(unitOfWork));
 
+        public ICalculationsService CalculationsService => _lazyCalculationsService.Value;
         public IRankService RankService => _lazyRankService.Value;
         public IRecommendationService RecommendationService => _lazyRecommendationService.Value;
-
+        public IVisualizationService VisualizationService => _lazyVisualizationService.Value;
 
         #endregion
 

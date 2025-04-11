@@ -14,6 +14,6 @@ namespace Services.Abstractions
         public IRankService RankService { get; }
         public IRecommendationService RecommendationService { get; }
         public IDashboardService DashboardService { get; }
-
+        public IVisualizationService VisualizationService { get; }
     }
 }

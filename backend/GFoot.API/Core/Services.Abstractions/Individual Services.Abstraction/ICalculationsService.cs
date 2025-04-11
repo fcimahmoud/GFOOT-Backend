@@ -7,5 +7,6 @@ namespace Services.Abstraction.Individual_Services
     {
         public Task<Activity> LogActivityAsync(string UserId, ActivityDTO activitiesDTO);
         public Task<float> CalculateCarbonFootPrintAsync(ActivityDTO activitiesDTO);
+        public Task<float> GetFootPrintAsync(string appUserId);
     }
 }

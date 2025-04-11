@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GFoot.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3e4074a4bd205771b644818e1f4363a0b37f466")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+20c61fec52c5a84bc67d55e075762d221bbe8d1d")]
 [assembly: System.Reflection.AssemblyProductAttribute("GFoot.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GFoot.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

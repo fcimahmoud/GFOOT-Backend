@@ -61,5 +61,34 @@ namespace Persistence.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<IEnumerable<TEntity>> GetAllByConditionSortedAsync<TKeySelector>( Expression<Func<TEntity, bool>> condition,
+            Expression<Func<TEntity, TKeySelector>> orderBy,
+            bool ascending = true)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            query = ascending ? query.Where(condition).OrderBy(orderBy) : query.Where(condition).OrderByDescending(orderBy);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TResult>> GetAllByConditionGroupedSortedAsync<TKeySelector, TGroupKey, TResult>
+            ( Expression<Func<TEntity, bool>> condition,
+              Expression<Func<TEntity, TGroupKey>> groupBy,
+              Expression<Func<IGrouping<TGroupKey, TEntity>, TKeySelector>> orderBy,
+              Expression<Func<IGrouping<TGroupKey, TEntity>, TResult>> selector,
+              bool ascending = true)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>().Where(condition);
+
+            var groupedQuery = query.GroupBy(groupBy);
+
+            var sortedQuery = ascending
+                ? groupedQuery.OrderBy(orderBy)
+                : groupedQuery.OrderByDescending(orderBy);
+
+            return await sortedQuery.Select(selector).ToListAsync();
+        }
     }
 }

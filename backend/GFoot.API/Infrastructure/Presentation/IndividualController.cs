@@ -24,9 +24,20 @@ namespace Presentation.Individual_Controllers
 
 
             return Ok(new {
-                Message = "Activity logged successfully.",
-                CarbonEmission = result.CarbonEmission
+                Message = "Activity logged successfully."
             });
+        }
+        [HttpGet("footprint")]
+        public async Task<IActionResult> GetFootPrint()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized(new
+            {
+                StatusCode = 401,
+                ErrorMessage = "User not authenticated."
+            });
+
+            return Ok(await serviceManager.CalculationsService.GetFootPrintAsync(userId));
         }
 
         [HttpGet("rank")]
@@ -65,6 +76,26 @@ namespace Presentation.Individual_Controllers
         {
             var recommendations = await serviceManager.RecommendationService.GetRecommendationAsync(recId);
             return Ok(recommendations);
+        }
+
+        [HttpGet("visualization")]
+        public async Task<IActionResult> GetUserVisualizationData(bool ascending)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { StatusCode = 401, ErrorMessage = "User not found." });
+
+            var dataDaily = await serviceManager.VisualizationService.GetVisualizedDataDailyAsync(userId, ascending);
+            var dataMonthly = await serviceManager.VisualizationService.GetVisualizedDataMonthlyAsync(userId, ascending);
+            var dataYearly = await serviceManager.VisualizationService.GetVisualizedDataYearlyAsync(userId, ascending);
+
+            return Ok(new
+            {
+                DataDaily = dataDaily,
+                DataMonthly = dataMonthly,
+                DataYearly = dataYearly
+            });
         }
     }
 }

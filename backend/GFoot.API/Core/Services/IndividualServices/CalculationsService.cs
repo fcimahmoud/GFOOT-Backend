@@ -96,6 +96,15 @@ namespace Services.IndividualServices
             return activity;
         }
 
+        public async Task<float> GetFootPrintAsync(string appUserId)
+        {
+            var individualUser = await GetIndividualByAppUserIdAsync(appUserId);
+            if (individualUser == null) throw new Exception("User not found.");
+
+            var userActivities = await unitOfWork.GetRepository<Activity, string>().GetAllByConditionSortedAsync(a => a.UserId == individualUser.Id, a => a.Date, false);
+            if (userActivities == null) throw new Exception("Activity Not Found");
+            return userActivities.FirstOrDefault()!.CarbonEmission;
+        }
         public async Task<IndividualUser?> GetIndividualByAppUserIdAsync(string applicationUserId)
         {
             return await unitOfWork.GetRepository<IndividualUser, string>().GetByConditionAsync(user => user.ApplicationUserId == applicationUserId);

@@ -18,5 +18,12 @@ namespace Domain.Contracts
         public Task<TEntity?> GetWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
         public Task<IEnumerable<TEntity>> GetAllWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes);
         public Task<IEnumerable<TEntity>> GetSortedAsync<TKeySelector>(Expression<Func<TEntity, TKeySelector>> orderBy, bool ascending = true);
+        public Task<IEnumerable<TEntity>> GetAllByConditionSortedAsync<TKeySelector>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TKeySelector>> orderBy, bool ascending = true);
+        public Task<IEnumerable<TResult>> GetAllByConditionGroupedSortedAsync<TKeySelector, TGroupKey, TResult>
+             (Expression<Func<TEntity, bool>> condition,
+               Expression<Func<TEntity, TGroupKey>> groupBy,
+               Expression<Func<IGrouping<TGroupKey, TEntity>, TKeySelector>> orderBy,
+               Expression<Func<IGrouping<TGroupKey, TEntity>, TResult>> selector,
+               bool ascending = true);
     }
 }
