@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace Persistence.Data.Configurations.Factory
 {
     internal class FactoryUserConfigurations 
@@ -30,6 +32,11 @@ namespace Persistence.Data.Configurations.Factory
                 .WithOne(F => F.FactoryUser)
                 .HasForeignKey(F => F.FactoryId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(i => i.ApplicationUser)
+                .WithOne(a => a.FactoryUser)
+                .HasForeignKey<FactoryUser>(I => I.ApplicationUserId)
+                .OnDelete(DeleteBehavior.SetNull);
 
         }
     }

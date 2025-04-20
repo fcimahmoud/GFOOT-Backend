@@ -5,6 +5,8 @@ namespace Domain.Entities.Factory
     {
         public required string RecHeader { get; set; }
         public required string RecBody { get; set; }
+        public DateOnly Date { get; set; }
+
 
         // Navigational Property
         public string? FactoryId { get; set; }

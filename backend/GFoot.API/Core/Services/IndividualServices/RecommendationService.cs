@@ -1,8 +1,4 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Net.Http.Json;
-
 namespace Services.IndividualServices
 {
     public class RecommendationService(
@@ -52,10 +48,22 @@ namespace Services.IndividualServices
             var individualUser = await unitOfWork.GetRepository<IndividualUser, string>()
                     .GetByConditionAsync(user => user.ApplicationUserId == userId);
 
-            var recommendations = ParseRecommendations(individualUser!.Id, recommendationsText);
-
             var recRepo = unitOfWork.GetRepository<IndividualRecommendation, string>();
-            foreach (var rec in recommendations)
+
+            // Delete Old Recommendations
+            var oldRecommendations = await recRepo.GetAllByConditionAsync(r => r.UserId == individualUser.Id);
+            if(oldRecommendations.Any())
+            {
+                foreach (var rec in oldRecommendations)
+                {
+                    recRepo.Delete(rec);
+                    await unitOfWork.SaveChangesAsync();
+                }
+            }
+
+            // Add New Recommendations
+            var newRecommendations = ParseRecommendations(individualUser!.Id, recommendationsText);
+            foreach (var rec in newRecommendations)
             {
                 await recRepo.AddAsync(rec);
                 await unitOfWork.SaveChangesAsync();

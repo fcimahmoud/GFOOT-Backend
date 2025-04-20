@@ -1,5 +1,6 @@
 ﻿
-using Shared.DashboardModels;
+global using Domain.Entities.Factory;
+global using Shared.DashboardModels;
 
 namespace Presentation
 {
@@ -24,7 +25,19 @@ namespace Presentation
             await serviceManager.DashboardService.DeleteFactoryAsync(factoryId);
             return Ok();
         }
+        [HttpGet("factories/{factoryId}")]
+        public async Task<ActionResult<FactoryUserDto>> GetFactoryById(string factoryId)
+        {
+            var factory = await serviceManager.DashboardService.GetFactoryByIdAsync(factoryId);
+            return factory is not null ? Ok(factory) : NotFound("Factory not found");
+        }
 
+        [HttpGet("factories")]
+        public async Task<ActionResult<IEnumerable<FactoryUserDto>>> GetAllFactoryUsers()
+        {
+            var factories = await serviceManager.DashboardService.GetAllFactoryUsersAsync();
+            return Ok(factories);
+        }
 
 
 
@@ -44,6 +57,19 @@ namespace Presentation
         {
             await serviceManager.DashboardService.DeleteAgentAsync(agentId);
             return Ok();
+        }
+        [HttpGet("agents/{agentId}")]
+        public async Task<ActionResult<EnvironmentalAgent>> GetAgentById(string agentId)
+        {
+            var agent = await serviceManager.DashboardService.GetAgentByIdAsync(agentId);
+            return agent is not null ? Ok(agent) : NotFound("Agent not found");
+        }
+
+        [HttpGet("agents")]
+        public async Task<ActionResult<IEnumerable<EnvironmentalAgent>>> GetAllAgentUsers()
+        {
+            var agents = await serviceManager.DashboardService.GetAllAgentUsersAsync();
+            return Ok(agents);
         }
     }
 }

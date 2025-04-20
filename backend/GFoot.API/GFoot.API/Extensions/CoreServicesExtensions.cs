@@ -1,8 +1,5 @@
 ﻿
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Shared.AuthenticationModels;
-using System.Text;
 
 namespace GFOOT.API.Extensions
 {
@@ -14,6 +11,7 @@ namespace GFOOT.API.Extensions
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
 

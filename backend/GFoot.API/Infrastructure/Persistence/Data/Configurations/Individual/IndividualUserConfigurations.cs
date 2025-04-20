@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace Persistence.Data.Configurations.Individual
 {
     internal class IndividualUserConfigurations
@@ -21,7 +23,13 @@ namespace Persistence.Data.Configurations.Individual
             builder.HasMany(N => N.IndividualRecommendations)
                     .WithOne(I => I.User)
                     .HasForeignKey(I => I.UserId)
-                    .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(i => i.ApplicationUser)
+                .WithOne(a => a.IndividualUser)
+                .HasForeignKey<IndividualUser>(I => I.ApplicationUserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
         }
     }
 }

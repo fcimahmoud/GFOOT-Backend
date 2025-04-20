@@ -61,30 +61,98 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<float?>("AverageContainerWeight")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("AverageEmployeeCommutingDistance")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("AverageShippingDistance")
+                        .HasColumnType("real");
+
+                    b.Property<decimal?>("AverageTruckDistance")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<decimal?>("AverageTruckWeight")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<string>("BusinessTravelFrequency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessTravelType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("CarbonEmission")
                         .HasColumnType("decimal(12,4)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("ElectricityConsumptionAmount")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<string>("ElectricityConsumptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeCommutingMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnergyIntensiveProcesses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("FacilitySize")
+                        .HasColumnType("real");
 
                     b.Property<string>("FactoryUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("FuelCombustion")
+                    b.Property<decimal?>("FuelConsumptionAmount")
                         .HasColumnType("decimal(8,2)");
 
-                    b.Property<decimal>("PurchasedElectricity")
-                        .HasColumnType("decimal(8,2)");
-
-                    b.Property<string>("RawMaterials")
-                        .IsRequired()
+                    b.Property<string>("FuelConsumptionType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("TransportationEnergyCombustion")
+                    b.Property<string>("IndustrialProcesses")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IndustrialProcessesDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberOfEmployees")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OwnedTransportation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RenewableElectricity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingMode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThirdPartyShipping")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("TruckFuelAmount")
+                        .HasColumnType("real");
+
+                    b.Property<string>("TruckFuelType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TruckType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WasteDisposalMethod")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("WasteGenerated")
                         .HasColumnType("decimal(8,2)");
 
-                    b.Property<decimal>("WasteEmission")
-                        .HasColumnType("decimal(8,2)");
+                    b.Property<string>("WasteType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("WaterConsumption")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -98,6 +166,9 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
 
                     b.Property<string>("FactoryId")
                         .HasColumnType("nvarchar(450)");

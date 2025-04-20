@@ -8,11 +8,11 @@ namespace Persistence.Data.Configurations.Factory
         {
             base.Configure(builder);
 
-            builder.Property(E => E.RawMaterials).IsRequired();
-            builder.Property(E => E.PurchasedElectricity).HasColumnType("decimal(8,2)");
-            builder.Property(E => E.FuelCombustion).HasColumnType("decimal(8,2)");
-            builder.Property(E => E.TransportationEnergyCombustion).HasColumnType("decimal(8,2)");
-            builder.Property(E => E.WasteEmission).HasColumnType("decimal(8,2)");
+            builder.Property(E => E.ElectricityConsumptionAmount).HasColumnType("decimal(8,2)");
+            builder.Property(E => E.FuelConsumptionAmount).HasColumnType("decimal(8,2)");
+            builder.Property(E => E.AverageTruckDistance).HasColumnType("decimal(8,2)");
+            builder.Property(E => E.AverageTruckWeight).HasColumnType("decimal(8,2)");
+            builder.Property(E => E.WasteGenerated).HasColumnType("decimal(8,2)");
             builder.Property(E => E.CarbonEmission).HasColumnType("decimal(12,4)");
 
         }

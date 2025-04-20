@@ -1,4 +1,7 @@
 ﻿
+global using AutoMapper;
+global using Services.FactoryServices;
+
 namespace Services
 {
     public class ServiceManager(
@@ -9,7 +12,9 @@ namespace Services
         IEmailService emailService,
         HttpClient httpClient,
         ILogger<CalculationsService> logger,
-        IAuthenticationService authenticationService
+        ILogger<FactoryCalculationsService> fLogger,
+        IAuthenticationService authenticationService,
+        IMapper mapper
         )
         : IServiceManager
     {
@@ -56,6 +61,24 @@ namespace Services
         #endregion
 
         #region Factory Services
+
+        private readonly Lazy<IFactoryProfile> _lazyFactoryProfileService =
+            new(() => new FactoryProfile(unitOfWork, mapper));
+        private readonly Lazy<IFactoryCalculationsService> _lazyFactoryCalculationsService =
+           new(() => new FactoryCalculationsService(unitOfWork, httpClient, fLogger, mapper));
+
+        private readonly Lazy<IFactoryRecommendationService> _lazyFactoryRecommendationService =
+            new(() => new FactoryRecommendationService(unitOfWork, httpClient));
+
+        private readonly Lazy<IFactoryVisualizationService> _lazyFactoryVisualizationService =
+            new(() => new FactoryVisualizationService(unitOfWork));
+
+
+        public IFactoryProfile FactoryProfileService => _lazyFactoryProfileService.Value;
+        public IFactoryCalculationsService FactoryCalculationsService => _lazyFactoryCalculationsService.Value;
+        public IFactoryRecommendationService FactoryRecommendationService => _lazyFactoryRecommendationService.Value;
+        public IFactoryVisualizationService FactoryVisualizationService => _lazyFactoryVisualizationService.Value;
+
 
         #endregion
 
