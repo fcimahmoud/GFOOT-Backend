@@ -73,12 +73,14 @@ namespace Services
         private readonly Lazy<IFactoryVisualizationService> _lazyFactoryVisualizationService =
             new(() => new FactoryVisualizationService(unitOfWork));
 
+        private readonly Lazy<IGuestRequestService> _lazyGuestRequestService =
+            new(() => new GuestRequestService(unitOfWork));
 
         public IFactoryProfile FactoryProfileService => _lazyFactoryProfileService.Value;
         public IFactoryCalculationsService FactoryCalculationsService => _lazyFactoryCalculationsService.Value;
         public IFactoryRecommendationService FactoryRecommendationService => _lazyFactoryRecommendationService.Value;
         public IFactoryVisualizationService FactoryVisualizationService => _lazyFactoryVisualizationService.Value;
-
+        public IGuestRequestService GuestRequestService => _lazyGuestRequestService.Value;
 
         #endregion
 

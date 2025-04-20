@@ -25,7 +25,6 @@ namespace Services.DashboardServices
                 UserType = appUser.UserType,
                 City = appUser.City,
                 Country = appUser.Country,
-                Phone = appUser.PhoneNumber,
             };
         }
 
@@ -44,7 +43,6 @@ namespace Services.DashboardServices
                 UserType = f.ApplicationUser.UserType,
                 City = f.ApplicationUser.City,
                 Country = f.ApplicationUser.Country,
-                Phone = f.ApplicationUser.PhoneNumber,
             });
         }
         public async Task<UserResultDTO> AddFactoryAsync(RegisterDTO registerModel)
@@ -105,7 +103,6 @@ namespace Services.DashboardServices
                 UserType = appUser.UserType,
                 City = appUser.City,
                 Country = appUser.Country,
-                Phone = appUser.PhoneNumber,
             };
         }
 
@@ -123,7 +120,6 @@ namespace Services.DashboardServices
                 UserType = f.ApplicationUser.UserType,
                 City = f.ApplicationUser.City,
                 Country = f.ApplicationUser.Country,
-                Phone = f.ApplicationUser.PhoneNumber,
             });
         }
         public async Task<UserResultDTO> AddAgentAsync(RegisterDTO registerModel)

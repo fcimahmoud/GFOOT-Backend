@@ -4,6 +4,7 @@ D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\apps
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\GFoot.API.dll
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\GFoot.API.runtimeconfig.json
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\GFoot.API.pdb
+D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\AutoMapper.dll
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\Azure.Core.dll
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\Azure.Identity.dll
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\PubTmp\Out\BouncyCastle.Cryptography.dll

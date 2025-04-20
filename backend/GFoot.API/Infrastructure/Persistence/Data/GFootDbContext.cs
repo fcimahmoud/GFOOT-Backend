@@ -24,5 +24,6 @@ namespace Persistence.Data
         public DbSet<SensorData> SensorData { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<EnvironmentalAgent> EnvironmentalAgents { get; set; }
+        public DbSet<GuestServiceRequest> GuestServiceRequests { get; set; }
     }
 }

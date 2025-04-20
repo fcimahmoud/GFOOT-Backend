@@ -153,3 +153,4 @@ D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\refint\GFoot.AP
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\GFoot.API.pdb
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\GFoot.API.genruntimeconfig.cache
 D:\G_Foot\backend\GFoot.API\GFoot.API\obj\Release\net8.0\win-x86\ref\GFoot.API.dll
+D:\G_Foot\backend\GFoot.API\GFoot.API\bin\Release\net8.0\win-x86\AutoMapper.dll

@@ -22,5 +22,7 @@ namespace Services.Abstractions
         public IFactoryCalculationsService FactoryCalculationsService { get; }
         public IFactoryRecommendationService FactoryRecommendationService { get; }
         public IFactoryVisualizationService FactoryVisualizationService { get; }
+        public IGuestRequestService GuestRequestService { get; }
+
     }
 }
