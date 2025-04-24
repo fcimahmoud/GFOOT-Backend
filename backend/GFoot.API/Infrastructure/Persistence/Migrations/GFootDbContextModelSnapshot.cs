@@ -94,7 +94,16 @@ namespace Persistence.Migrations
                     b.Property<string>("ElectricityConsumptionType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmployeeCommutingMethod")
+                    b.Property<string>("EmployeeCommutingCar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeCommutingCarpool")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeCommutingPublic")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeCommutingWalkOrCycle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EnergyIntensiveProcesses")
@@ -256,6 +265,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("FactoryUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("OnLatestCalculation")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ReportBody")
                         .IsRequired()

@@ -30,6 +30,21 @@ namespace Persistence.Repositories
         public async Task<IEnumerable<TEntity>> GetAllByConditionAsync(Expression<Func<TEntity, bool>> condition)
             => await context.Set<TEntity>().Where(condition).ToListAsync();
 
+        public async Task<TEntity?> GetByConditionWithIncludesAsync(
+                     Expression<Func<TEntity, bool>> condition,
+                     params Expression<Func<TEntity, object>>[] includes)
+        {
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(condition);
+        }
+
+
         // Retrieve entity with Includes (for related data)
         public async Task<TEntity?> GetWithIncludesAsync(Expression<Func<TEntity, bool>> condition, params Expression<Func<TEntity, object>>[] includes)
         {

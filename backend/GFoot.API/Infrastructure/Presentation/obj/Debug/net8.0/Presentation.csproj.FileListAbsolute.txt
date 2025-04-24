@@ -1,9 +1,11 @@
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Presentation.deps.json
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Presentation.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Presentation.pdb
+D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Services.Abstractions.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Shared.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Services.Abstractions.pdb
+D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Shared.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Presentation.csproj.AssemblyReference.cache
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Presentation.GeneratedMSBuildEditorConfig.editorconfig
@@ -16,5 +18,3 @@ D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Present
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\refint\Presentation.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\Presentation.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\obj\Debug\net8.0\ref\Presentation.dll
-D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.dll
-D:\G_Foot\backend\GFoot.API\Infrastructure\Presentation\bin\Debug\net8.0\Domain.pdb

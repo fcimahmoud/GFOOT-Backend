@@ -1,4 +1,6 @@
-﻿    
+﻿
+using Shared.IndividualModels.ProfileModels;
+
 namespace Presentation.Individual_Controllers
 {
     [Authorize(Roles = "IndividualUserRole")]
@@ -27,6 +29,7 @@ namespace Presentation.Individual_Controllers
                 Message = "Activity logged successfully."
             });
         }
+
         [HttpGet("footprint")]
         public async Task<IActionResult> GetFootPrint()
         {
@@ -96,6 +99,32 @@ namespace Presentation.Individual_Controllers
                 DataMonthly = dataMonthly,
                 DataYearly = dataYearly
             });
+        }
+
+        [HttpGet("profile")]
+        public async Task<IActionResult> GetUserProfileAsync()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized(new
+            {
+                StatusCode = 401,
+                ErrorMessage = "User not authenticated."
+            });
+
+            return Ok(await serviceManager.ProfileService.GetProfileByIdAsync(userId));
+        }
+
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateUserProfileAsync(UpdateProfileUserDto profile)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized(new
+            {
+                StatusCode = 401,
+                ErrorMessage = "User not authenticated."
+            });
+            await serviceManager.ProfileService.UpdateProfileAsync(userId, profile);
+            return Ok("Profile Updated Successfully!");
         }
     }
 }

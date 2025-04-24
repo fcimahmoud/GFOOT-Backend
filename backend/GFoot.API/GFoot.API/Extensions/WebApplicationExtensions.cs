@@ -11,15 +11,17 @@ namespace GFoot.API.Extensions
             // ServiceProvider method provide for me scoped services to choose 
             var services = scope.ServiceProvider;
 
-            // CLR Create object from gFootContext
-            var gFootContextInitializer = services.GetRequiredService<IDbInitializer>();
-
             // To Log Exceptions
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();  
 
             try
             {
+                // Apply migrations automatically
+                var context = services.GetRequiredService<GFootDbContext>();
+                await context.Database.MigrateAsync();
+
                 // To Update Database for gFootContext
+                var gFootContextInitializer = services.GetRequiredService<IDbInitializer>();
                 await gFootContextInitializer.InitializeIdentityAsync();
 
                 // To Seed Data for gFootContext

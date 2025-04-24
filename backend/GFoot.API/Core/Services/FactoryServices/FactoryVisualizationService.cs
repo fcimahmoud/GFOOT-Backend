@@ -1,12 +1,4 @@
-﻿using Services.Abstractions.Factory_Services.Abstraction;
-using Shared.FactoryModels;
-using Shared.IndividualModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Services.FactoryServices
 {
     public class FactoryVisualizationService(IUnitOfWork unitOfWork) : IFactoryVisualizationService
@@ -15,6 +7,8 @@ namespace Services.FactoryServices
         {
             var factoryUser = await unitOfWork.GetRepository<FactoryUser, string>()
                .GetByConditionAsync(u => u.ApplicationUserId == appUserId);
+
+            if (factoryUser == null) throw new Exception("Factory User Not Found");
             var userId = factoryUser.Id;
 
             var emissions = await unitOfWork.GetRepository<FactoryEmission, string>()
@@ -34,6 +28,8 @@ namespace Services.FactoryServices
         {
             var factoryUser = await unitOfWork.GetRepository<FactoryUser, string>()
                .GetByConditionAsync(u => u.ApplicationUserId == appUserId);
+
+            if (factoryUser == null) throw new Exception("Factory User Not Found");
             var userId = factoryUser.Id;
 
             var data = await unitOfWork.GetRepository<FactoryEmission, string>()

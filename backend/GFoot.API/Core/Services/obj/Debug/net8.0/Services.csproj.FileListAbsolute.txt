@@ -2,8 +2,10 @@ D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Services.deps.json
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Services.dll
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Services.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Domain.dll
+D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Presentation.dll
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Services.Abstractions.dll
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Shared.dll
+D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Presentation.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Domain.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Services.Abstractions.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services\bin\Debug\net8.0\Shared.pdb

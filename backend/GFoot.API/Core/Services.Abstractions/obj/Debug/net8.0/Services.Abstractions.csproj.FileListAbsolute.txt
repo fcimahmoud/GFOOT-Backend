@@ -1,8 +1,10 @@
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Services.Abstractions.deps.json
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Services.Abstractions.dll
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Services.Abstractions.pdb
+D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Domain.dll
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Shared.dll
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Shared.pdb
+D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Domain.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\Services.Abstractions.csproj.AssemblyReference.cache
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\Services.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\Services.Abstractions.AssemblyInfoInputs.cache
@@ -14,5 +16,3 @@ D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\Services
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\refint\Services.Abstractions.dll
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\Services.Abstractions.pdb
 D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\obj\Debug\net8.0\ref\Services.Abstractions.dll
-D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Domain.dll
-D:\G_Foot\backend\GFoot.API\Core\Services.Abstractions\bin\Debug\net8.0\Domain.pdb

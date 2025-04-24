@@ -9,7 +9,7 @@ namespace Domain.Entities.Factory
         // Energy Consumption
         public string? ElectricityConsumptionType { get; set; } //
         public float? ElectricityConsumptionAmount { get; set; }
-        public string? RenewableElectricity { get; set; } //
+        public string? RenewableElectricity { get; set; } //=> RenewableElectricitySource
         public string? FuelConsumptionType { get; set; } //
         public float? FuelConsumptionAmount { get; set; }
 
@@ -41,7 +41,11 @@ namespace Domain.Entities.Factory
         public string? IndustrialProcessesDescription { get; set; }
 
         // Employee Travel & Commuting
-        public string? EmployeeCommutingMethod { get; set; }
+        public string? EmployeeCommutingWalkOrCycle { get; set; }
+        public string? EmployeeCommutingPublic { get; set; }
+        public string? EmployeeCommutingCar { get; set; }
+        public string? EmployeeCommutingCarpool { get; set; }
+
         public float? AverageEmployeeCommutingDistance { get; set; }
         public string? BusinessTravelFrequency { get; set; }
         public string? BusinessTravelType { get; set; }

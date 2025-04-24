@@ -5,7 +5,7 @@ namespace Presentation
     [Authorize(Roles = "FactoryUserRole")]
     public class OrganizationController(IServiceManager serviceManager) : ApiController
     {
-        [HttpGet("getProfile")]
+        [HttpGet("profile")]
         public async Task<IActionResult> GetOrganizationProfile()
         {
             var organizationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -17,20 +17,21 @@ namespace Presentation
             return Ok(profile);
         }
 
-        [HttpPost("updateProfile")]
-        public  IActionResult UpdateOrganizationProfile(FactoryProfileDTO profile)
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateOrganizationProfile(UpdateFactoryProfileDTO profile)
         {
             var organizationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(organizationUserId))
                 return Unauthorized(new { StatusCode = 401, ErrorMessage = "User not found." });
 
-            var updatedProfile = serviceManager.FactoryProfileService.UpdateFactoryProfileAsync(organizationUserId, profile);
+            await serviceManager.FactoryProfileService.UpdateFactoryProfileAsync(organizationUserId, profile);
 
-            return Ok(updatedProfile);
+            return Ok("Factory Profile Updated Successfully!");
         }
 
-        [HttpPost("Calculation")]
+        //[Authorize("EnvironmentalAgentRole")]
+        [HttpPost("calculation")]
         public async Task<IActionResult> CreateCalculation([FromBody] FactoryEmissionDTO factoryEmission)
         {
             var organizationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -47,7 +48,7 @@ namespace Presentation
                 ErrorMessage = "Failed to Calculate Carbon FootPrint Organization for the . Please check your input data."
             });
 
-            await serviceManager.FactoryRecommendationService.CreateRecommendationAsync(organizationUserId, factoryEmission, result.CarbonEmission);
+            //await serviceManager.FactoryRecommendationService.CreateRecommendationAsync(organizationUserId, factoryEmission, result.CarbonEmission);
 
             return Ok(new
             {
@@ -80,7 +81,7 @@ namespace Presentation
             return Ok(recommendations);
         }
 
-        [HttpGet("recommendation/{recId}")]
+        [HttpGet("recommendations/{recId}")]
         public async Task<IActionResult> GetOrganizationRecommendation(string recId)
         {
             var organizationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);

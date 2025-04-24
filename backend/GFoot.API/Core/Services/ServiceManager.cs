@@ -1,6 +1,8 @@
 ﻿
 global using AutoMapper;
 global using Services.FactoryServices;
+using Services.Abstractions.Agent_Services.Abstraction;
+using Services.AgentServices;
 
 namespace Services
 {
@@ -53,6 +55,10 @@ namespace Services
         private readonly Lazy<IVisualizationService> _lazyVisualizationService =
             new(() => new VisualizationService(unitOfWork));
 
+        private readonly Lazy<IProfileService> _lazyProfileService =
+            new(() => new ProfileService(unitOfWork, userManager));
+
+        public IProfileService ProfileService => _lazyProfileService.Value;
         public ICalculationsService CalculationsService => _lazyCalculationsService.Value;
         public IRankService RankService => _lazyRankService.Value;
         public IRecommendationService RecommendationService => _lazyRecommendationService.Value;
@@ -63,7 +69,7 @@ namespace Services
         #region Factory Services
 
         private readonly Lazy<IFactoryProfile> _lazyFactoryProfileService =
-            new(() => new FactoryProfile(unitOfWork, mapper));
+            new(() => new FactoryProfile(unitOfWork, mapper, userManager));
         private readonly Lazy<IFactoryCalculationsService> _lazyFactoryCalculationsService =
            new(() => new FactoryCalculationsService(unitOfWork, httpClient, fLogger, mapper));
 
@@ -85,6 +91,11 @@ namespace Services
         #endregion
 
         #region Regulators Services
+
+        private readonly Lazy<IEnvironmentalAgentService> _lazyEnvironmentalAgentService =
+            new(() => new EnvironmentalAgentService(unitOfWork, emailService));
+
+        public IEnvironmentalAgentService EnvironmentalAgentService => _lazyEnvironmentalAgentService.Value;
 
         #endregion
     }

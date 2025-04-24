@@ -1,12 +1,15 @@
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.deps.json
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.runtimeconfig.json
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Domain.dll
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Presentation.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Services.Abstractions.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Services.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Shared.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Services.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Domain.pdb
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Presentation.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Services.Abstractions.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Shared.pdb
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.csproj.AssemblyReference.cache
@@ -19,6 +22,5 @@ D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persiste
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\refint\Persistence.dll
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.pdb
-D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\ref\Persistence.dll
-D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\bin\Debug\net8.0\Persistence.runtimeconfig.json
 D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\Persistence.genruntimeconfig.cache
+D:\G_Foot\backend\GFoot.API\Infrastructure\Persistence\obj\Debug\net8.0\ref\Persistence.dll

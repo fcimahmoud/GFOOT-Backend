@@ -11,7 +11,7 @@ namespace GFoot.API
                 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
                 .AddJsonOptions(options =>
                  {
-                     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Ensure proper casing
+                     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Ensure proper casing 
                  });
 
             builder.Services.AddCoreServices(builder.Configuration);

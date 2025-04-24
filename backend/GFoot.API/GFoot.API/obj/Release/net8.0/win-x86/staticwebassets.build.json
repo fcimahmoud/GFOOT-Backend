@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "CC+8ZTEYfIARVsKuK9W618oMSbnevvj8lKJA26Kuk2w=",
+  "Hash": "rWncnk0eLWJ8vG9DtVqZT2pRERltVkT57OMYUm6cPr0=",
   "Source": "GFoot.API",
   "BasePath": "_content/GFoot.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "GFoot.API\\wwwroot",
+      "Source": "GFoot.API",
+      "ContentRoot": "D:\\G_Foot\\backend\\GFoot.API\\GFoot.API\\wwwroot\\",
+      "BasePath": "_content/GFoot.API",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

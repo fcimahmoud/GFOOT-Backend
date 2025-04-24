@@ -23,3 +23,5 @@ global using Services.Abstractions.Individual_Services.Abstraction;
 global using Services.DashboardServices;
 global using Services.Abstractions.Factory_Services.Abstraction;
 global using Shared.FactoryModels;
+global using Services.Abstractions.Agent_Services.Abstraction;
+global using Shared.AgentModels;

@@ -5,6 +5,7 @@ namespace Domain.Entities.Factory
     {
         public required string ReportBody { get; set; }
         public DateTime DateGenerated { get; set; } = DateTime.UtcNow;
+        public bool OnLatestCalculation { get; set; } = false;
 
         // Navigational Property
         public string? FactoryUserId { get; set; }

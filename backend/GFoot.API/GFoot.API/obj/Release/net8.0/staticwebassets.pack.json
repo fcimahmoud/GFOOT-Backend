@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\G_Foot\\backend\\GFoot.API\\GFoot.API\\wwwroot\\libwkhtmltox.dll",
+      "PackagePath": "staticwebassets\\libwkhtmltox.dll"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.GFoot.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.GFoot.API.props",
+      "PackagePath": "build\\GFoot.API.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.GFoot.API.props",
+      "PackagePath": "buildMultiTargeting\\GFoot.API.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.GFoot.API.props",
+      "PackagePath": "buildTransitive\\GFoot.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

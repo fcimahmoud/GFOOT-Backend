@@ -21,7 +21,7 @@ namespace Services.FactoryServices
                     { "electricity_consumption_amount", factoryEmissionDTO.ElectricityConsumptionAmount.ToString() },
                     { "renewable_electricity", factoryEmissionDTO.RenewableElectricity },
                     { "fuel_consumption_type", factoryEmissionDTO.FuelConsumptionType },
-                    { "fuel_consumption_amount", factoryEmissionDTO.FuelConsumptionAmount.ToString() },
+                    { "fuel_consumption_amount", factoryEmissionDTO.FuelConsumptionAmount },
                     { "owned_transportation", factoryEmissionDTO.OwnedTransportation },
                     { "truck_fuel_type", factoryEmissionDTO.TruckFuelType },
                     { "truck_fuel_amount", factoryEmissionDTO.TruckFuelAmount.ToString() },
@@ -39,7 +39,12 @@ namespace Services.FactoryServices
                     { "Energy_intensive_processes", factoryEmissionDTO.EnergyIntensiveProcesses },
                     { "industrial_processes", factoryEmissionDTO.IndustrialProcesses },
                     { "industrial_processes_description", factoryEmissionDTO.IndustrialProcessesDescription },
-                    { "employee_commuting_method", factoryEmissionDTO.EmployeeCommutingMethod },
+
+                    { "employee_commuting_walkOrCycle", factoryEmissionDTO.EmployeeCommutingWalkOrCycle },
+                    { "employee_commuting_public", factoryEmissionDTO.EmployeeCommutingPublic },
+                    { "employee_commuting_car", factoryEmissionDTO.EmployeeCommutingCar },
+                    { "employee_commuting_carpool", factoryEmissionDTO.EmployeeCommutingCarpool },
+
                     { "average_employee_commuting_distance", factoryEmissionDTO.AverageEmployeeCommutingDistance.ToString() },
                     { "business_travel_frequency", factoryEmissionDTO.BusinessTravelFrequency },
                     { "business_travel_type", factoryEmissionDTO.BusinessTravelType },
@@ -111,7 +116,7 @@ namespace Services.FactoryServices
             factoryEmission.Id = Guid.NewGuid().ToString();
             factoryEmission.FactoryUserId = factoryUser.Id;
             factoryEmission.Date = DateOnly.FromDateTime(DateTime.UtcNow);
-            factoryEmission.CarbonEmission = await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
+            factoryEmission.CarbonEmission = 3;//await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
 
 
             await unitOfWork.GetRepository<FactoryEmission, string>().AddAsync(factoryEmission);

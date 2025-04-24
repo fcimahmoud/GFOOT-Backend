@@ -1,5 +1,4 @@
-﻿
-using Shared.AuthenticationModels;
+﻿using Shared.AuthenticationModels;
 
 namespace GFOOT.API.Extensions
 {
@@ -10,6 +9,7 @@ namespace GFOOT.API.Extensions
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
 

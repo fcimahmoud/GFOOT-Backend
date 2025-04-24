@@ -4,6 +4,7 @@ global using Services.Abstraction.Individual_Services;
 global using Services.Abstractions.Individual_Services.Abstraction;
 global using Services.Abstractions.Dashboard_Services.Abstraction;
 global using Services.Abstractions.Factory_Services.Abstraction;
+global using Services.Abstractions.Agent_Services.Abstraction;
 
 namespace Services.Abstractions
 {
@@ -16,6 +17,7 @@ namespace Services.Abstractions
         public IRecommendationService RecommendationService { get; }
         public IDashboardService DashboardService { get; }
         public IVisualizationService VisualizationService { get; }
+        public IProfileService ProfileService { get; }
 
         // Factory Services
         public IFactoryProfile FactoryProfileService { get; }
@@ -23,6 +25,9 @@ namespace Services.Abstractions
         public IFactoryRecommendationService FactoryRecommendationService { get; }
         public IFactoryVisualizationService FactoryVisualizationService { get; }
         public IGuestRequestService GuestRequestService { get; }
+
+        // EnvironmentalAgent Services
+        public IEnvironmentalAgentService EnvironmentalAgentService { get; }
 
     }
 }

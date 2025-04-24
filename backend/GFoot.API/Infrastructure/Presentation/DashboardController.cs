@@ -25,6 +25,7 @@ namespace Presentation
             await serviceManager.DashboardService.DeleteFactoryAsync(factoryId);
             return Ok();
         }
+
         [HttpGet("factories/{factoryId}")]
         public async Task<ActionResult<FactoryUserDto>> GetFactoryById(string factoryId)
         {

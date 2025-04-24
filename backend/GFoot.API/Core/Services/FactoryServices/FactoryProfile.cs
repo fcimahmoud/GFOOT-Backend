@@ -1,50 +1,53 @@
 ﻿using AutoMapper;
+using Shared.FactoryModels.ProfileModels;
 
 namespace Services.FactoryServices
 {
-    public class FactoryProfile(IUnitOfWork unitOfWork, IMapper mapper) : IFactoryProfile
+    public class FactoryProfile(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager) : IFactoryProfile
     {
         public async Task<FactoryProfileDTO> GetFactoryProfileAsync(string appUserId)
         {
             var factoryUser = await unitOfWork.GetRepository<FactoryUser, string>()
-                       .GetByConditionAsync(user => user.ApplicationUserId == appUserId);
+                       .GetWithIncludesAsync(user => user.ApplicationUserId == appUserId, f => f.ApplicationUser!);
 
             if (factoryUser == null) throw new Exception("Factory User Not found");
-            var profile = mapper.Map<FactoryUser, FactoryProfileDTO>(factoryUser);
-
-            //var profile = new FactoryProfileDTO
-            //{
-            //    DisplayName = factoryUser!.ApplicationUser!.DisplayName,
-            //    IndustryType = factoryUser.IndustryType,
-            //    IndustryDescription = factoryUser.IndustryDescription,
-            //    Phone = factoryUser.Phone,
-            //    Country = factoryUser.ApplicationUser.Country,
-            //    City = factoryUser.ApplicationUser.City
-            //};
+            //var profile = mapper.Map<FactoryUser, FactoryProfileDTO>(factoryUser);
+            var profile = new FactoryProfileDTO
+            {
+                Id = factoryUser.Id,
+                DisplayName = factoryUser.ApplicationUser?.DisplayName ?? "",
+                UserName = factoryUser.ApplicationUser?.UserName ?? "",
+                Email = factoryUser.ApplicationUser?.Email ?? "",
+                IndustryType = factoryUser.IndustryType,
+                PhoneNumber = factoryUser.ApplicationUser?.PhoneNumber ?? "",
+                Country = factoryUser.ApplicationUser?.Country ?? "",
+                City = factoryUser.ApplicationUser?.City ?? ""
+            };
 
             return profile;
         }
 
-        public async Task UpdateFactoryProfileAsync(string appUserId, FactoryProfileDTO profile)
+        public async Task UpdateFactoryProfileAsync(string appUserId, UpdateFactoryProfileDTO profile)
         {
+            var appUser = userManager.Users.FirstOrDefault(a => a.Id == appUserId);
+            if (appUser == null)
+                throw new Exception("Application User not found.");
+
             var factoryUser = await unitOfWork.GetRepository<FactoryUser, string>()
                        .GetByConditionAsync(user => user.ApplicationUserId == appUserId);
             if (factoryUser == null)
-                throw new Exception("User not found.");
+                throw new Exception("Factory User not found.");
 
-            var updatedProfile = mapper.Map<FactoryProfileDTO, FactoryUser>(profile);
-            unitOfWork.GetRepository<FactoryUser, string>().Update(updatedProfile);
+
+            factoryUser.IndustryType = profile.IndustryType;
+            appUser.City = profile.City;
+            appUser.Country = profile.Country;
+            appUser.DisplayName = profile.DisplayName;
+
+
+            unitOfWork.GetRepository<FactoryUser, string>().Update(factoryUser);
+            await userManager.UpdateAsync(appUser);
             await unitOfWork.SaveChangesAsync();
-
-
-            //factoryUser.ApplicationUser!.DisplayName = profile.DisplayName;
-            //factoryUser.ApplicationUser.Country = profile.Country;
-            //factoryUser.ApplicationUser.City = profile.City;
-            //factoryUser.IndustryType = profile.IndustryType;
-            //factoryUser.IndustryDescription = profile.IndustryDescription;
-            //factoryUser.Phone = profile.Phone;
-            //unitOfWork.GetRepository<FactoryUser, string>().Update(updatedProfile);
-            //await unitOfWork.SaveChangesAsync();
 
         }
     }

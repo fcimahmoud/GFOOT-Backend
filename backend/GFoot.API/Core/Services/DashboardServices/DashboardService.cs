@@ -2,6 +2,7 @@
 global using Services.Abstractions.Dashboard_Services.Abstraction;
 global using Shared.DashboardModels;
 global using System.Data;
+using Domain.Entities.Factory;
 
 namespace Services.DashboardServices
 {
@@ -51,14 +52,15 @@ namespace Services.DashboardServices
         }
         public async Task DeleteFactoryAsync(string factoryId)
         {
-            var appUser = await userManager.FindByIdAsync(factoryId);
-            if (appUser == null)
-                throw new Exception("AppUser not found");
 
             var factoryRepo = unitOfWork.GetRepository<FactoryUser, string>();
-            var factoryUser = await factoryRepo.GetByConditionAsync(f => f.ApplicationUserId == factoryId);
+            var factoryUser = await factoryRepo.GetAsync(factoryId);
             if (factoryUser == null)
                 throw new Exception("Factory not found");
+
+            var appUser = userManager.Users.FirstOrDefault(a => a.Id == factoryUser.ApplicationUserId);
+            if (appUser == null)
+                throw new Exception("AppUser not found");
 
             await userManager.DeleteAsync(appUser);
             factoryRepo.Delete(factoryUser);
@@ -66,7 +68,13 @@ namespace Services.DashboardServices
         }
         public async Task UpdateFactoryAsync(UpdateFactoryDto updateFactoryDto, string factoryId)
         {
-            var appUser = await userManager.FindByIdAsync(factoryId);
+            var factoryRepo = unitOfWork.GetRepository<FactoryUser, string>();
+            var factoryUser = await factoryRepo.GetAsync(factoryId);
+            if (factoryUser == null)
+                throw new Exception("Factory not found");
+            factoryUser.IndustryType = updateFactoryDto.IndustryType;
+
+            var appUser = userManager.Users.FirstOrDefault(a => a.Id == factoryUser.ApplicationUserId);
             if(appUser == null)
                 throw new Exception("AppUser not found");
             appUser.DisplayName = updateFactoryDto.DisplayName;
@@ -75,11 +83,6 @@ namespace Services.DashboardServices
             appUser.City = updateFactoryDto.City;
 
 
-            var factoryRepo = unitOfWork.GetRepository<FactoryUser, string>();
-            var factoryUser = await factoryRepo.GetByConditionAsync(f => f.ApplicationUserId == factoryId);
-            if (factoryUser == null)
-                throw new Exception("Factory not found");
-            factoryUser.IndustryType = updateFactoryDto.IndustryType;
 
             await userManager.UpdateAsync(appUser);
             factoryRepo.Update(factoryUser);
@@ -128,14 +131,14 @@ namespace Services.DashboardServices
         }
         public async Task DeleteAgentAsync(string agentId)
         {
-            var appUser = await userManager.FindByIdAsync(agentId);
-            if (appUser == null)
-                throw new Exception("AppUser not found");
-
             var agentRepo = unitOfWork.GetRepository<EnvironmentalAgent, string>();
-            var agentUser = await agentRepo.GetByConditionAsync(e => e.ApplicationUserId == agentId);
+            var agentUser = await agentRepo.GetAsync(agentId);
             if (agentUser == null)
                 throw new Exception("Environmental Agent not found");
+
+            var appUser = userManager.Users.FirstOrDefault(a => a.Id == agentUser.ApplicationUserId);
+            if (appUser == null)
+                throw new Exception("AppUser not found");
 
             await userManager.DeleteAsync(appUser);
             agentRepo.Delete(agentUser);
@@ -143,7 +146,12 @@ namespace Services.DashboardServices
         }
         public async Task UpdateAgentAsync(UpdateAgentDto updateAgentDto, string agentId)
         {
-            var appUser = await userManager.FindByIdAsync(agentId);
+            var agentRepo = unitOfWork.GetRepository<EnvironmentalAgent, string>();
+            var agentUser = await agentRepo.GetAsync(agentId);
+            if (agentUser == null)
+                throw new Exception("Environmental Agent not found");
+
+            var appUser = userManager.Users.FirstOrDefault(a => a.Id == agentUser.ApplicationUserId);
             if (appUser == null)
                 throw new Exception("AppUser not found");
             appUser.DisplayName = updateAgentDto.DisplayName;
