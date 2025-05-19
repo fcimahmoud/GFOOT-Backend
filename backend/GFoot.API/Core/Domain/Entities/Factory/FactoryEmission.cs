@@ -3,18 +3,20 @@ namespace Domain.Entities.Factory
 {
     public class FactoryEmission : BaseEntity<string>
     {
+        //28 question => 31 variable + Date
+        public DateTime Date { get; set; }
         public int? NumberOfEmployees { get; set; }
-        public float? FacilitySize { get; set; }
+        public float? FacilitySize { get; set; } //=> OrganizationSize
 
         // Energy Consumption
         public string? ElectricityConsumptionType { get; set; } //
         public float? ElectricityConsumptionAmount { get; set; }
-        public string? RenewableElectricity { get; set; } //=> RenewableElectricitySource
+        public string? RenewableElectricitySource { get; set; } //=> RenewableElectricitySource
         public string? FuelConsumptionType { get; set; } //
-        public float? FuelConsumptionAmount { get; set; }
+        public string? FuelConsumptionAmount { get; set; } //=> string
 
         // Owned Transportation
-        public string? OwnedTransportation { get; set; }    // Yes or NO  : if yes will proceed to the truck data
+        public string? OwnedTransportation { get; set; }    // Yes or NO
         public string? TruckFuelType { get; set; }
         public float? TruckFuelAmount { get; set; }
         public float? AverageTruckDistance { get; set; }
@@ -22,7 +24,7 @@ namespace Domain.Entities.Factory
         public string? TruckType { get; set; }
 
         // Third-Party Shipping
-        public string? ThirdPartyShipping { get; set; }   // Yes or NO  : if yes will proceed to the Third-Party Shipping data
+        public string? ThirdPartyShipping { get; set; }   // Yes or NO
         public string? ShippingMode { get; set; }
         public float? AverageShippingDistance { get; set; }
         public float? AverageContainerWeight { get; set; }
@@ -49,7 +51,6 @@ namespace Domain.Entities.Factory
         public float? AverageEmployeeCommutingDistance { get; set; }
         public string? BusinessTravelFrequency { get; set; }
         public string? BusinessTravelType { get; set; }
-        public DateOnly Date { get; set; }
         public float CarbonEmission { get; set; }
 
         // Navigational Property

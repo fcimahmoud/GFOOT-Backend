@@ -1,6 +1,4 @@
 ﻿
-using AutoMapper;
-
 namespace Services.FactoryServices
 {
     public class FactoryCalculationsService
@@ -16,10 +14,10 @@ namespace Services.FactoryServices
                 var queryParams = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "number_of_employees", factoryEmissionDTO.NumberOfEmployees.ToString() },
-                    { "facility_size", factoryEmissionDTO.FacilitySize.ToString() },
+                    { "facility_size", factoryEmissionDTO.OrganizationSize.ToString() },
                     { "electricity_consumption_type", factoryEmissionDTO.ElectricityConsumptionType },
                     { "electricity_consumption_amount", factoryEmissionDTO.ElectricityConsumptionAmount.ToString() },
-                    { "renewable_electricity", factoryEmissionDTO.RenewableElectricity },
+                    { "renewable_electricity_source", factoryEmissionDTO.RenewableElectricitySource },
                     { "fuel_consumption_type", factoryEmissionDTO.FuelConsumptionType },
                     { "fuel_consumption_amount", factoryEmissionDTO.FuelConsumptionAmount },
                     { "owned_transportation", factoryEmissionDTO.OwnedTransportation },
@@ -40,7 +38,7 @@ namespace Services.FactoryServices
                     { "industrial_processes", factoryEmissionDTO.IndustrialProcesses },
                     { "industrial_processes_description", factoryEmissionDTO.IndustrialProcessesDescription },
 
-                    { "employee_commuting_walkOrCycle", factoryEmissionDTO.EmployeeCommutingWalkOrCycle },
+                    { "employee_commuting_walkOrBicycle", factoryEmissionDTO.EmployeeCommutingWalkOrBicycle },
                     { "employee_commuting_public", factoryEmissionDTO.EmployeeCommutingPublic },
                     { "employee_commuting_car", factoryEmissionDTO.EmployeeCommutingCar },
                     { "employee_commuting_carpool", factoryEmissionDTO.EmployeeCommutingCarpool },
@@ -50,7 +48,7 @@ namespace Services.FactoryServices
                     { "business_travel_type", factoryEmissionDTO.BusinessTravelType },
                 });
 
-                var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/calculate?{await queryParams.ReadAsStringAsync()}");
+                var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/icalc?{await queryParams.ReadAsStringAsync()}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -84,10 +82,10 @@ namespace Services.FactoryServices
             /*  var factoryEmission = new FactoryEmission
             {
                 NumberOfEmployees = factoryEmissionDTO.NumberOfEmployees,
-                FacilitySize = factoryEmissionDTO.FacilitySize,
+                OrganizationSize = factoryEmissionDTO.OrganizationSize,
                 ElectricityConsumptionType = factoryEmissionDTO.ElectricityConsumptionType,
                 ElectricityConsumptionAmount = factoryEmissionDTO.ElectricityConsumptionAmount,
-                RenewableElectricity = factoryEmissionDTO.RenewableElectricity,
+                RenewableElectricitySource = factoryEmissionDTO.RenewableElectricitySource,
                 FuelConsumptionType = factoryEmissionDTO.FuelConsumptionType,
                 FuelConsumptionAmount = factoryEmissionDTO.FuelConsumptionAmount,
                 OwnedTransportation = factoryEmissionDTO.OwnedTransportation,
@@ -115,16 +113,14 @@ namespace Services.FactoryServices
 
             factoryEmission.Id = Guid.NewGuid().ToString();
             factoryEmission.FactoryUserId = factoryUser.Id;
-            factoryEmission.Date = DateOnly.FromDateTime(DateTime.UtcNow);
-            factoryEmission.CarbonEmission = 3;//await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
+            factoryEmission.Date = DateTime.UtcNow;
+            factoryEmission.CarbonEmission = 3000;// await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
 
 
             await unitOfWork.GetRepository<FactoryEmission, string>().AddAsync(factoryEmission);
             await unitOfWork.SaveChangesAsync();
 
             logger.LogInformation($"Organization Emission logged for organization {applicationUserId}, Carbon Footprint: {factoryEmission.CarbonEmission}");
-
-            //await factoryRecommendationService.CreateRecommendationAsync(applicationUserId, factoryEmissionDTO, factoryEmission.CarbonEmission);
 
             return factoryEmission;
         }

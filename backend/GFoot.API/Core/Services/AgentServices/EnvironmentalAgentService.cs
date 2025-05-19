@@ -72,7 +72,7 @@ namespace Services.AgentServices
             reportBody.AppendLine($"Generated On: {DateTime.UtcNow}");
             reportBody.AppendLine("\n-------- All Carbon Footprint Records --------");
 
-            foreach (var e in emissions.OrderByDescending(e => e.Date.ToDateTime(TimeOnly.MinValue)))
+            foreach (var e in emissions.OrderByDescending(e => e.Date))
             {
                 reportBody.AppendLine($"""
                         

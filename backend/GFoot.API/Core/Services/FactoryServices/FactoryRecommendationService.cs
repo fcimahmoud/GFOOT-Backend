@@ -1,4 +1,6 @@
 ﻿
+using Shared.FactoryModels;
+
 namespace Services.FactoryServices
 {
     public class FactoryRecommendationService(IUnitOfWork unitOfWork, HttpClient httpClient) : IFactoryRecommendationService
@@ -8,10 +10,10 @@ namespace Services.FactoryServices
             var queryParams = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
                     { "number_of_employees", factoryEmissionDTO.NumberOfEmployees.ToString() },
-                    { "facility_size", factoryEmissionDTO.FacilitySize.ToString() },
+                    { "facility_size", factoryEmissionDTO.OrganizationSize.ToString() },
                     { "electricity_consumption_type", factoryEmissionDTO.ElectricityConsumptionType },
                     { "electricity_consumption_amount", factoryEmissionDTO.ElectricityConsumptionAmount.ToString() },
-                    { "renewable_electricity", factoryEmissionDTO.RenewableElectricity },
+                    { "renewable_electricity_source", factoryEmissionDTO.RenewableElectricitySource },
                     { "fuel_consumption_type", factoryEmissionDTO.FuelConsumptionType },
                     { "fuel_consumption_amount", factoryEmissionDTO.FuelConsumptionAmount },
                     { "owned_transportation", factoryEmissionDTO.OwnedTransportation },
@@ -32,7 +34,7 @@ namespace Services.FactoryServices
                     { "industrial_processes", factoryEmissionDTO.IndustrialProcesses },
                     { "industrial_processes_description", factoryEmissionDTO.IndustrialProcessesDescription },
 
-                    { "employee_commuting_walkOrCycle", factoryEmissionDTO.EmployeeCommutingWalkOrCycle },
+                    { "employee_commuting_walkOrBicycle", factoryEmissionDTO.EmployeeCommutingWalkOrBicycle },
                     { "employee_commuting_public", factoryEmissionDTO.EmployeeCommutingPublic },
                     { "employee_commuting_car", factoryEmissionDTO.EmployeeCommutingCar },
                     { "employee_commuting_carpool", factoryEmissionDTO.EmployeeCommutingCarpool },
@@ -40,12 +42,12 @@ namespace Services.FactoryServices
                     { "average_employee_commuting_distance", factoryEmissionDTO.AverageEmployeeCommutingDistance.ToString() },
                     { "business_travel_frequency", factoryEmissionDTO.BusinessTravelFrequency },
                     { "business_travel_type", factoryEmissionDTO.BusinessTravelType },
-                    { "footprint",  emission.ToString()}
+                    { "carbon_footprint",  emission.ToString()}
                 });
 
 
             // Send a POST Request to the specified URL Containing the value serialized as JSON in the Request Body.
-            var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/tips?{await queryParams.ReadAsStringAsync()}");
+            var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/tips-org?{await queryParams.ReadAsStringAsync()}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -55,10 +57,12 @@ namespace Services.FactoryServices
 
             // Read the JSON response to Deserialize it to store in the database.
             var jsonResponse = await response.Content.ReadAsStringAsync();
-            var recommendationsText = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonResponse)
-                                        ["Personalized Recommendation"];
+            var parsedResponse = JsonSerializer.Deserialize<OrganizationRecommendationsResponseML>(jsonResponse);
 
+            if (parsedResponse == null || parsedResponse.OrganizationRecommendations == null)
+                throw new Exception("Invalid response format from recommendations API.");
 
+            var recommendationsText = parsedResponse.OrganizationRecommendations;
 
             var factoryUser = await unitOfWork.GetRepository<FactoryUser, string>()
                     .GetByConditionAsync(user => user.ApplicationUserId == userId);
@@ -116,26 +120,26 @@ namespace Services.FactoryServices
             return recommendationDto;
         }
 
-        private List<FactoryRecommendation> ParseRecommendations(string userId, string recommendationsText)
+        private List<FactoryRecommendation> ParseRecommendations(string userId, Dictionary<string, string> recommendationsDict)
         {
             var tips = new List<FactoryRecommendation>();
-            var lines = recommendationsText.Split("\n");
 
-            foreach (var line in lines)
+            foreach (var entry in recommendationsDict)
             {
-                string modifiedLine = string.Empty;
-                if (line.Length >= 3) modifiedLine = line.Remove(0, 3);
-                if (modifiedLine.StartsWith("**")) // Title detection
+                var title = entry.Key?.Trim();
+                var body = entry.Value?.Trim();
+
+                if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(body))
                 {
-                    var parts = modifiedLine.Split(":", 2);
-                    if (parts.Length == 2)
+                    tips.Add(new FactoryRecommendation
                     {
-                        var title = parts[0].Replace("**", "").Trim();
-                        var body = parts[1].Trim();
-                        tips.Add(new FactoryRecommendation { FactoryId = userId, RecHeader = title, RecBody = body });
-                    }
+                        FactoryId = userId,
+                        RecHeader = title,
+                        RecBody = body
+                    });
                 }
             }
+
             return tips;
         }
     }

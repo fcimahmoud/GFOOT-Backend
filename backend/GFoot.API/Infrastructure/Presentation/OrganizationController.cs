@@ -30,7 +30,6 @@ namespace Presentation
             return Ok("Factory Profile Updated Successfully!");
         }
 
-        //[Authorize("EnvironmentalAgentRole")]
         [HttpPost("calculation")]
         public async Task<IActionResult> CreateCalculation([FromBody] FactoryEmissionDTO factoryEmission)
         {
@@ -48,7 +47,7 @@ namespace Presentation
                 ErrorMessage = "Failed to Calculate Carbon FootPrint Organization for the . Please check your input data."
             });
 
-            //await serviceManager.FactoryRecommendationService.CreateRecommendationAsync(organizationUserId, factoryEmission, result.CarbonEmission);
+            await serviceManager.FactoryRecommendationService.CreateRecommendationAsync(organizationUserId, factoryEmission, result.CarbonEmission);
 
             return Ok(new
             {

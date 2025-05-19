@@ -9,7 +9,6 @@ namespace Persistence.Data.Configurations.Factory
             base.Configure(builder);
 
             builder.Property(E => E.ElectricityConsumptionAmount).HasColumnType("decimal(8,2)");
-            builder.Property(E => E.FuelConsumptionAmount).HasColumnType("decimal(8,2)");
             builder.Property(E => E.AverageTruckDistance).HasColumnType("decimal(8,2)");
             builder.Property(E => E.AverageTruckWeight).HasColumnType("decimal(8,2)");
             builder.Property(E => E.WasteGenerated).HasColumnType("decimal(8,2)");

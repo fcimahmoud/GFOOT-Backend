@@ -4,12 +4,12 @@ namespace Shared.FactoryModels
     public class FactoryEmissionDTO
     {
         public int NumberOfEmployees { get; set; }
-        public float FacilitySize { get; set; }
+        public float OrganizationSize { get; set; }
 
         // Energy Consumption
         public string ElectricityConsumptionType { get; set; }
         public float ElectricityConsumptionAmount { get; set; }
-        public string RenewableElectricity { get; set; }
+        public string RenewableElectricitySource { get; set; }
         public string FuelConsumptionType { get; set; }
         public string FuelConsumptionAmount { get; set; }
 
@@ -41,7 +41,7 @@ namespace Shared.FactoryModels
         public string IndustrialProcessesDescription { get; set; }
 
         // Employee Travel & Commuting
-        public string EmployeeCommutingWalkOrCycle { get; set; }
+        public string EmployeeCommutingWalkOrBicycle { get; set; }
         public string EmployeeCommutingPublic { get; set; }
         public string EmployeeCommutingCar { get; set; }
         public string EmployeeCommutingCarpool { get; set; }

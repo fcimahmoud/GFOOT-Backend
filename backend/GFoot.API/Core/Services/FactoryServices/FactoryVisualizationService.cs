@@ -40,7 +40,7 @@ namespace Services.FactoryServices
                                              g => new FactoryActivityEmissionDTO
                                              {
                                                  Id = g.Key.ToString(),
-                                                 Date = new DateOnly(g.Key, 1, 1),
+                                                 Date = new DateTime(g.Key, 1, 1),
                                                  CarbonEmission = g.Sum(a => a.CarbonEmission)
                                              },
                                              ascending);
