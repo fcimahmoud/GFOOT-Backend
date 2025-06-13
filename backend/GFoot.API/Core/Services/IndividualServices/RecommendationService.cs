@@ -32,7 +32,7 @@ namespace Services.IndividualServices
             });
 
             // Send a POST Request to the specified URL Containing the value serialized as JSON in the Request Body.
-            var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/tips?{await queryParams.ReadAsStringAsync()}");
+            var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/tips?{await queryParams.ReadAsStringAsync()}");
 
             if (!response.IsSuccessStatusCode)
             {

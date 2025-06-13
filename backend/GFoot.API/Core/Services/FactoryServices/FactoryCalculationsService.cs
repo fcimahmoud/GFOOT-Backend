@@ -48,7 +48,7 @@ namespace Services.FactoryServices
                     { "business_travel_type", factoryEmissionDTO.BusinessTravelType },
                 });
 
-                var response = await httpClient.GetAsync($"https://footprint-estimate.up.railway.app/icalc?{await queryParams.ReadAsStringAsync()}");
+                var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/calc-org?{await queryParams.ReadAsStringAsync()}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -114,7 +114,7 @@ namespace Services.FactoryServices
             factoryEmission.Id = Guid.NewGuid().ToString();
             factoryEmission.FactoryUserId = factoryUser.Id;
             factoryEmission.Date = DateTime.UtcNow;
-            factoryEmission.CarbonEmission = 3000;// await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
+            factoryEmission.CarbonEmission = await CalculateCarbonFootPrintAsync(factoryEmissionDTO);
 
 
             await unitOfWork.GetRepository<FactoryEmission, string>().AddAsync(factoryEmission);

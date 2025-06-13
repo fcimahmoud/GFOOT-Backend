@@ -4,7 +4,7 @@ namespace Shared.FactoryModels
     public class FactoryActivityEmissionDTO
     {
         public string Id { get; set; }
-        public DateTime Date;
+        public DateOnly Date { get; set; }
         public float CarbonEmission { get; set; }
     }
 }

@@ -185,8 +185,8 @@ namespace Services.AgentServices
                 Id = r.Id,
                 OnLatestCalculation = r.OnLatestCalculation,
                 DateGenerated = r.DateGenerated,
-                FactoryName = r.Factory!.ApplicationUser!.DisplayName,
-                FactoryEmail = r.Factory.ApplicationUser.Email!,
+                //FactoryName = r.Factory!.ApplicationUser!.DisplayName ?? "",
+                //FactoryEmail = r.Factory.ApplicationUser.Email! ?? "",
                 AgentName = r.EnvironmentalAgent!.ApplicationUser!.DisplayName,
                 AgentEmail = r.EnvironmentalAgent.ApplicationUser.Email!,
                 ReportBody = r.ReportBody

@@ -17,7 +17,7 @@ namespace Services.FactoryServices
             var data = emissions.Select(a => new FactoryActivityEmissionDTO
             {
                 Id = a.Id,
-                Date = a.Date,
+                Date = DateOnly.FromDateTime(a.Date),
                 CarbonEmission = a.CarbonEmission,
             });
 
@@ -40,7 +40,7 @@ namespace Services.FactoryServices
                                              g => new FactoryActivityEmissionDTO
                                              {
                                                  Id = g.Key.ToString(),
-                                                 Date = new DateTime(g.Key, 1, 1),
+                                                 Date = DateOnly.FromDateTime(new DateTime(g.Key, 1, 1)),
                                                  CarbonEmission = g.Sum(a => a.CarbonEmission)
                                              },
                                              ascending);
