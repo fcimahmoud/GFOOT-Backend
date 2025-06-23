@@ -121,8 +121,9 @@ Visit: https://localhost:6001/swagger
 
 ## 🔍 Contact
 For questions or feedback:
-LinkedIn: https://www.linkedin.com/in/mahmoud-ahmed-3291b7229
-Email: ma5740@fayoum.edu.eg
+
+- LinkedIn: https://www.linkedin.com/in/mahmoud-ahmed-3291b7229 
+- Email: ma5740@fayoum.edu.eg
 
 ---
 
