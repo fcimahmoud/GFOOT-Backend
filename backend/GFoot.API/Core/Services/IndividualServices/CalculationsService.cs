@@ -35,7 +35,7 @@ namespace Services.IndividualServices
                     { "energy_efficiency", request.EnergyEfficiency }
                 });
 
-                var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/calculate?{await queryParams.ReadAsStringAsync()}");
+                var response = await httpClient.GetAsync($"https://gfoot-eveyfcgrepa3bcb3.francecentral-01.azurewebsites.net/individual/calculation?{await queryParams.ReadAsStringAsync()}");
 
                 if (!response.IsSuccessStatusCode)
                 {

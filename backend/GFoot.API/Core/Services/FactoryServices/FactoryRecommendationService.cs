@@ -47,7 +47,7 @@ namespace Services.FactoryServices
 
 
             // Send a POST Request to the specified URL Containing the value serialized as JSON in the Request Body.
-            var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/tips-org?{await queryParams.ReadAsStringAsync()}");
+            var response = await httpClient.GetAsync($"https://gfoot-eveyfcgrepa3bcb3.francecentral-01.azurewebsites.net/organization/tips-org?{await queryParams.ReadAsStringAsync()}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -70,7 +70,7 @@ namespace Services.FactoryServices
             var recRepo = unitOfWork.GetRepository<FactoryRecommendation, string>();
 
             // Delete Old Recommendations
-            var oldRecommendations = await recRepo.GetAllByConditionAsync(r => r.FactoryId == userId);
+            var oldRecommendations = await recRepo.GetAllByConditionAsync(r => r.FactoryId == factoryUser.Id);
             if (oldRecommendations.Any())
             {
                 foreach (var rec in oldRecommendations)

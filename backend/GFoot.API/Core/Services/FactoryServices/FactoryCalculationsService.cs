@@ -48,7 +48,7 @@ namespace Services.FactoryServices
                     { "business_travel_type", factoryEmissionDTO.BusinessTravelType },
                 });
 
-                var response = await httpClient.GetAsync($"https://carbon-footprint-estimate.up.railway.app/calc-org?{await queryParams.ReadAsStringAsync()}");
+                var response = await httpClient.GetAsync($"https://gfoot-eveyfcgrepa3bcb3.francecentral-01.azurewebsites.net/organization/calc-org?{await queryParams.ReadAsStringAsync()}");
 
                 if (!response.IsSuccessStatusCode)
                 {
